@@ -1,27 +1,35 @@
-import { ExternalLink, ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import Tag from '@/components/ui/Tag'
-import Badge from '@/components/ui/Badge'
-import { truncate } from '@/lib/utils'
-import { PROJECT_STATUS_COLORS } from '@/constants'
+import { ExternalLink, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import Tag from "@/components/ui/Tag";
+import Badge from "@/components/ui/Badge";
+import { truncate } from "@/lib/utils";
+import { PROJECT_STATUS_COLORS } from "@/constants";
 
 const STATUS_VARIANT = {
-  completed: 'success',
-  ongoing:   'accent',
-  planned:   'purple',
-}
+  completed: "success",
+  ongoing: "accent",
+  planned: "purple",
+};
 
 export default function ProjectCard({ project }) {
   const {
-    title, slug, shortDescription, techStack = [],
-    thumbnailUrl, githubUrl, liveDemoUrl, status, isFeatured, tags = [],
-  } = project
+    title,
+    slug,
+    shortDescription,
+    techStack = [],
+    thumbnailUrl,
+    githubUrl,
+    liveDemoUrl,
+    status,
+    isFeatured,
+    tags = [],
+  } = project;
 
   return (
-    <motion.div
+    <motion.article
       whileHover={{ y: -4 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
+      transition={{ duration: 0.2 }}
       className="card group flex flex-col h-full overflow-hidden"
     >
       {/* Thumbnail */}
@@ -44,7 +52,7 @@ export default function ProjectCard({ project }) {
         {/* Status badge overlay */}
         {status && (
           <div className="absolute top-3 left-3">
-            <Badge variant={STATUS_VARIANT[status] || 'default'}>
+            <Badge variant={STATUS_VARIANT[status] || "default"}>
               {status}
             </Badge>
           </div>
@@ -60,8 +68,10 @@ export default function ProjectCard({ project }) {
 
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="text-base font-semibold text-[#F5F5F5] mb-2 group-hover:text-[#3B82F6]
-                       transition-colors leading-snug">
+        <h3
+          className="text-base font-semibold text-[#F5F5F5] mb-2 group-hover:text-[#3B82F6]
+                       transition-colors leading-snug"
+        >
           {title}
         </h3>
 
@@ -75,9 +85,7 @@ export default function ProjectCard({ project }) {
             {techStack.slice(0, 4).map((tech) => (
               <Tag key={tech.name || tech}>{tech.name || tech}</Tag>
             ))}
-            {techStack.length > 4 && (
-              <Tag>+{techStack.length - 4}</Tag>
-            )}
+            {techStack.length > 4 && <Tag>+{techStack.length - 4}</Tag>}
           </div>
         )}
 
@@ -121,6 +129,6 @@ export default function ProjectCard({ project }) {
           </Link>
         </div>
       </div>
-    </motion.div>
-  )
+    </motion.article>
+  );
 }

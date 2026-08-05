@@ -1,23 +1,49 @@
 @import "tailwindcss";
 
-/* ── Design tokens ─────────────────────────────────────────── */
-:root {
-  --bg-base:    #0B0B0B;
-  --bg-card:    #111111;
-  --bg-subtle:  #161616;
-  --border:     #242424;
-  --border-hover: #3a3a3a;
-  --accent:     #3B82F6;
-  --accent-hover: #2563EB;
-  --accent-muted: #1d3f6e;
+/* ══════════════════════════════════════════════
+   DARK THEME (default)
+══════════════════════════════════════════════ */
+:root,
+[data-theme="dark"] {
+  --bg-base:       #0B0B0B;
+  --bg-card:       #111111;
+  --bg-subtle:     #161616;
+  --border:        #242424;
+  --border-hover:  #3a3a3a;
+  --accent:        #3B82F6;
+  --accent-hover:  #2563EB;
+  --accent-muted:  #1d3f6e;
   --text-primary:  #F5F5F5;
-  --text-secondary: #A1A1AA;
+  --text-secondary:#A1A1AA;
   --text-muted:    #71717A;
-  --success:    #10B981;
-  --error:      #EF4444;
+  --success:       #10B981;
+  --error:         #EF4444;
+  --shadow:        0 4px 24px rgba(0,0,0,0.4);
 }
 
-/* ── Base ──────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   LIGHT THEME
+══════════════════════════════════════════════ */
+[data-theme="light"] {
+  --bg-base:       #FAFAFA;
+  --bg-card:       #FFFFFF;
+  --bg-subtle:     #F4F4F5;
+  --border:        #E4E4E7;
+  --border-hover:  #D1D1D6;
+  --accent:        #2563EB;
+  --accent-hover:  #1D4ED8;
+  --accent-muted:  #DBEAFE;
+  --text-primary:  #09090B;
+  --text-secondary:#3F3F46;
+  --text-muted:    #71717A;
+  --success:       #059669;
+  --error:         #DC2626;
+  --shadow:        0 4px 24px rgba(0,0,0,0.08);
+}
+
+/* ══════════════════════════════════════════════
+   BASE RESET
+══════════════════════════════════════════════ */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -37,9 +63,13 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
+  /* Smooth theme transition */
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* ── Typography scale ──────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   TYPOGRAPHY
+══════════════════════════════════════════════ */
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
   font-weight: 600;
@@ -49,45 +79,39 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
 h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); }
-h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+h3 { font-size: clamp(1.15rem, 2vw, 1.5rem); }
 
-p {
-  color: var(--text-secondary);
-  line-height: 1.75;
-}
+p { color: var(--text-secondary); line-height: 1.75; }
+a { color: inherit; text-decoration: none; }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* ── Scrollbar ─────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════════ */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg-base); }
-::-webkit-scrollbar-thumb {
-  background: var(--border-hover);
-  border-radius: 4px;
-}
+::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* ── Selection ─────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   SELECTION
+══════════════════════════════════════════════ */
 ::selection {
   background: var(--accent-muted);
   color: var(--text-primary);
 }
 
-/* ── Scroll progress bar ───────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════ */
 #scroll-progress {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   height: 2px;
   background: var(--accent);
   z-index: 9999;
   transition: width 0.1s linear;
 }
 
-/* ── Section spacing ───────────────────────────────────────── */
 .section {
   padding: clamp(4rem, 8vw, 7rem) 0;
 }
@@ -99,9 +123,27 @@ a {
   padding: 0 clamp(1.25rem, 4vw, 2.5rem);
 }
 
-/* ── Gradient text ─────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   CARD
+══════════════════════════════════════════════ */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+/* ══════════════════════════════════════════════
+   GRADIENT HELPERS
+══════════════════════════════════════════════ */
 .gradient-text {
-  background: linear-gradient(135deg, #F5F5F5 0%, #A1A1AA 100%);
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-muted) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -114,30 +156,37 @@ a {
   background-clip: text;
 }
 
-/* ── Card base ─────────────────────────────────────────────── */
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
-}
-
-/* ── Focus ring ────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   FOCUS
+══════════════════════════════════════════════ */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* ── Reduced motion ────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   REDUCED MOTION
+══════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   MOBILE TOUCH IMPROVEMENTS
+══════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Increase tap target sizes */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent zoom on input focus (iOS) */
+  input, textarea, select {
+    font-size: 16px !important;
   }
 }

@@ -114,19 +114,19 @@ export default function Hero() {
           </motion.div>
 
           {/* CTA buttons */}
-          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-3 mb-12">
-            <Button as="a" href="#projects" size="lg">
-              {settings?.heroCTAPrimary || 'View Projects'}
-              <ArrowDown size={16} />
-            </Button>
-            <Button as="a" href="#contact" variant="secondary" size="lg">
-              {settings?.heroCTASecondary || 'Contact Me'}
-            </Button>
-          </motion.div>
+       <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 mb-10">
+  <Button as="a" href="#projects" size="lg" className="w-full sm:w-auto justify-center">
+    {settings?.heroCTAPrimary || 'View Projects'}
+    <ArrowDown size={16} />
+  </Button>
+  <Button as="a" href="#contact" variant="secondary" size="lg" className="w-full sm:w-auto justify-center">
+    {settings?.heroCTASecondary || 'Contact Me'}
+  </Button>
+</motion.div>
 
           {/* Social row */}
           <motion.div variants={itemVariants}
-            className="flex items-center gap-4 text-[#71717A] text-sm">
+            className="hidden sm:flex items-center gap-4 text-[var(--text-muted)] text-sm">
             <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer"
                className="flex items-center gap-1.5 hover:text-[#F5F5F5] transition-colors">
               <ExternalLink size={15} /> GitHub
