@@ -50,17 +50,17 @@ function getDuration(startDate, endDate, isCurrent) {
   return rem > 0 ? `${years}y ${rem}mo` : `${years}y`;
 }
 
-// ── Timeline dot ───────────────────────────────────────────────
+// ── Timeline dot — orange, square ──────────────────────────────
 function TimelineDot({ isCurrent }) {
   return (
     <div className="relative flex items-center justify-center flex-shrink-0 mt-1.5">
       {isCurrent ? (
         <span className="relative flex h-3.5 w-3.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3B82F6] opacity-50" />
-          <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#3B82F6]" />
+          <span className="pulse-ring absolute inline-flex h-full w-full bg-[var(--accent)]" />
+          <span className="relative inline-flex h-3.5 w-3.5 bg-[var(--accent)]" />
         </span>
       ) : (
-        <div className="w-3 h-3 rounded-full border-2 border-[#3B82F6] bg-[var(--bg-base)]" />
+        <div className="w-3 h-3 border-2 border-[var(--accent)] bg-[var(--bg-base)]" />
       )}
     </div>
   );
@@ -68,7 +68,7 @@ function TimelineDot({ isCurrent }) {
 
 // ── Experience Item ────────────────────────────────────────────
 function ExperienceItem({ item, index }) {
-  const [expanded, setExpanded] = useState(index === 0); // First item open by default
+  const [expanded, setExpanded] = useState(index === 0);
 
   const hasDetails =
     item.responsibilities?.length > 0 ||
@@ -83,7 +83,7 @@ function ExperienceItem({ item, index }) {
       transition={{
         duration: 0.45,
         delay: index * 0.07,
-        ease: [0.21, 0.47, 0.32, 0.98],
+        ease: [0.16, 1, 0.3, 1],
       }}
       className="flex gap-5"
     >
@@ -91,12 +91,12 @@ function ExperienceItem({ item, index }) {
       <div className="flex flex-col items-center">
         <TimelineDot isCurrent={item.isCurrent} />
         <div
-          className="w-px flex-1 mt-3"
+          className="w-[2px] flex-1 mt-3"
           style={{
             background:
               "linear-gradient(to bottom, var(--border-hover), transparent)",
           }}
-        />{" "}
+        />
       </div>
 
       {/* Card */}
@@ -104,7 +104,7 @@ function ExperienceItem({ item, index }) {
         <div
           className={`card p-5 transition-all duration-200 ${
             hasDetails
-              ? "cursor-pointer hover:border-[var(--border-hover)]"
+              ? "cursor-pointer hover:border-[var(--text-primary)]"
               : ""
           }`}
           onClick={() => hasDetails && setExpanded((e) => !e)}
@@ -125,7 +125,7 @@ function ExperienceItem({ item, index }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className="text-sm font-medium text-[#3B82F6] hover:text-[#60A5FA]
+                    className="text-sm font-semibold text-[var(--accent)] hover:text-[var(--accent-hover)]
                                inline-flex items-center gap-1 transition-colors"
                   >
                     {item.company}
@@ -170,7 +170,7 @@ function ExperienceItem({ item, index }) {
             </span>
 
             {item.startDate && (
-              <span className="text-[var(--accent)]">
+              <span className="text-[var(--accent)] font-bold">
                 {getDuration(item.startDate, item.endDate, item.isCurrent)}
               </span>
             )}
@@ -202,15 +202,15 @@ function ExperienceItem({ item, index }) {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.28, ease: [0.21, 0.47, 0.32, 0.98] }}
+                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                 className="overflow-hidden"
               >
-                <div className="mt-4 pt-4 border-t border-[var(--border)] space-y-4">
+                <div className="mt-4 pt-4 border-t-2 border-[var(--border)] space-y-4">
                   {/* Responsibilities */}
                   {item.responsibilities?.length > 0 && (
                     <div>
                       <p
-                        className="text-[10px] font-semibold uppercase tracking-widest
+                        className="text-[10px] font-bold uppercase tracking-[0.12em]
                                    text-[var(--text-muted)] mb-2"
                       >
                         Responsibilities
@@ -221,7 +221,7 @@ function ExperienceItem({ item, index }) {
                             key={i}
                             className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
                           >
-                            <span className="text-[#3B82F6] mt-1.5 flex-shrink-0">
+                            <span className="text-[var(--accent)] mt-1.5 flex-shrink-0 font-bold">
                               ›
                             </span>
                             {r}
@@ -235,7 +235,7 @@ function ExperienceItem({ item, index }) {
                   {item.achievements?.length > 0 && (
                     <div>
                       <p
-                        className="text-[10px] font-semibold uppercase tracking-widest
+                        className="text-[10px] font-bold uppercase tracking-[0.12em]
                                    text-[var(--text-muted)] mb-2"
                       >
                         Achievements
@@ -244,7 +244,7 @@ function ExperienceItem({ item, index }) {
                         {item.achievements.map((a, i) => (
                           <li
                             key={i}
-                            className="flex items-start gap-2 text-sm text-[#10B981]"
+                            className="flex items-start gap-2 text-sm text-[var(--success)]"
                           >
                             <span className="mt-1.5 flex-shrink-0">✦</span>
                             {a}
@@ -258,7 +258,7 @@ function ExperienceItem({ item, index }) {
                   {item.techStack?.length > 0 && (
                     <div>
                       <p
-                        className="text-[10px] font-semibold uppercase tracking-widest
+                        className="text-[10px] font-bold uppercase tracking-[0.12em]
                                    text-[var(--text-muted)] mb-2"
                       >
                         Stack
@@ -267,9 +267,9 @@ function ExperienceItem({ item, index }) {
                         {item.techStack.map((t) => (
                           <span
                             key={t}
-                            className="px-2 py-0.5 rounded text-xs font-mono
+                            className="px-2 py-0.5 text-xs font-mono font-semibold
                                        bg-[var(--bg-subtle)] text-[var(--text-secondary)]
-                                       border border-[var(--border)]"
+                                       border-2 border-[var(--border)]"
                           >
                             {t}
                           </span>
@@ -299,7 +299,7 @@ function EducationItem({ item, index }) {
     >
       <div className="flex flex-col items-center">
         <TimelineDot isCurrent={item.isOngoing} />
-        <div className="w-px flex-1 bg-[var(--border)] mt-3" />
+        <div className="w-[2px] flex-1 bg-[var(--border)] mt-3" />
       </div>
 
       <div className="pb-8 w-full min-w-0">
@@ -321,7 +321,7 @@ function EducationItem({ item, index }) {
               href={item.institutionUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-[#3B82F6] hover:text-[#60A5FA]
+              className="text-sm font-semibold text-[var(--accent)] hover:text-[var(--accent-hover)]
                          inline-flex items-center gap-1 transition-colors"
             >
               {item.institution}
@@ -341,7 +341,7 @@ function EducationItem({ item, index }) {
               {item.isOngoing ? "Ongoing" : (item.endYear ?? "—")}
             </span>
             {item.grade && (
-              <span className="text-[#10B981] font-medium">
+              <span className="text-[var(--success)] font-bold">
                 {item.grade}
                 {item.gradeScale && ` / ${item.gradeScale}`}
               </span>
@@ -357,9 +357,9 @@ function EducationItem({ item, index }) {
 
           {/* Relevant courses */}
           {item.relevantCourses?.length > 0 && (
-            <div className="mt-4 pt-3 border-t border-[var(--border)]">
+            <div className="mt-4 pt-3 border-t-2 border-[var(--border)]">
               <p
-                className="text-[10px] font-semibold uppercase tracking-widest
+                className="text-[10px] font-bold uppercase tracking-[0.12em]
                            text-[var(--text-muted)] mb-2"
               >
                 Relevant Courses
@@ -368,8 +368,8 @@ function EducationItem({ item, index }) {
                 {item.relevantCourses.map((c) => (
                   <span
                     key={c}
-                    className="px-2 py-0.5 rounded text-xs bg-[var(--bg-subtle)]
-                               text-[var(--text-secondary)] border border-[var(--border)]"
+                    className="px-2 py-0.5 text-xs bg-[var(--bg-subtle)]
+                               text-[var(--text-secondary)] border-2 border-[var(--border)]"
                   >
                     {c}
                   </span>
@@ -384,17 +384,13 @@ function EducationItem({ item, index }) {
 }
 
 // ── Certificate Item ───────────────────────────────────────────
-const CERT_CATEGORY_STYLE = {
-  certification: { bg: "#1a2e4a", text: "#60A5FA", icon: "🏅" },
-  award: { bg: "#2d1f0d", text: "#FBB040", icon: "🏆" },
-  hackathon: { bg: "#2d1f3d", text: "#C4B5FD", icon: "⚡" },
-  publication: { bg: "#0d2e1f", text: "#34D399", icon: "📝" },
-  recognition: { bg: "#1f1a2e", text: "#F9A8D4", icon: "✨" },
-  other: { bg: "#1a1a1a", text: "#A1A1AA", icon: "🎖️" },
+const CERT_ICONS = {
+  certification: '🏅', award: '🏆', hackathon: '⚡',
+  publication: '📝', recognition: '✨', other: '🎖️',
 };
 
 function CertificateItem({ item, index }) {
-  const style = CERT_CATEGORY_STYLE[item.category] || CERT_CATEGORY_STYLE.other;
+  const icon = CERT_ICONS[item.category] || CERT_ICONS.other;
 
   return (
     <motion.div
@@ -402,22 +398,22 @@ function CertificateItem({ item, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: index * 0.06 }}
-      className="card p-4 group hover:border-[var(--border-hover)] transition-all"
+      className="card p-4 group hover:border-[var(--text-primary)] transition-all"
     >
       <div className="flex items-start gap-3">
         {/* Icon */}
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
-          style={{ backgroundColor: style.bg }}
+          className="w-10 h-10 flex items-center justify-center text-lg flex-shrink-0
+                     bg-[var(--accent-light)] border-2 border-[var(--accent-muted)]"
         >
           {item.imageUrl ? (
             <img
               src={item.imageUrl}
               alt=""
-              className="w-6 h-6 object-contain rounded"
+              className="w-6 h-6 object-contain"
             />
           ) : (
-            style.icon
+            icon
           )}
         </div>
 
@@ -453,7 +449,7 @@ function CertificateItem({ item, index }) {
               {item.skills.map((s) => (
                 <span
                   key={s}
-                  className="px-1.5 py-0.5 rounded text-[10px]
+                  className="px-1.5 py-0.5 text-[10px]
                              bg-[var(--bg-subtle)] text-[var(--text-muted)]
                              border border-[var(--border)]"
                 >
@@ -470,7 +466,7 @@ function CertificateItem({ item, index }) {
             href={item.credentialUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[var(--text-muted)] hover:text-[#3B82F6] transition-colors
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors
                        opacity-0 group-hover:opacity-100 flex-shrink-0"
             aria-label="View credential"
           >
@@ -489,11 +485,11 @@ function TimelineSkeleton() {
       {Array.from({ length: 3 }).map((_, i) => (
         <div key={i} className="flex gap-5">
           <div className="flex flex-col items-center pt-1.5">
-            <Skeleton className="w-3.5 h-3.5 rounded-full" />
-            <Skeleton className="w-px flex-1 mt-3" style={{ minHeight: 80 }} />
+            <Skeleton className="w-3.5 h-3.5" />
+            <Skeleton className="w-[2px] flex-1 mt-3" style={{ minHeight: 80 }} />
           </div>
           <div className="pb-8 w-full">
-            <Skeleton className="h-28 w-full rounded-xl" />
+            <Skeleton className="h-28 w-full" />
           </div>
         </div>
       ))}
@@ -540,31 +536,31 @@ export default function ExperienceTimeline() {
         />
       </SectionReveal>
 
-      {/* Tab bar */}
+      {/* Tab bar — boxy */}
       <SectionReveal delay={0.1}>
         <div
-          className="flex items-center gap-1 mt-8 mb-10 p-1.5
-              bg-[var(--bg-subtle)] border border-[var(--border)]
-              rounded-[var(--radius-md)] w-fit"
+          className="flex items-center gap-0 mt-8 mb-10
+              border-2 border-[var(--border)] w-fit"
         >
           {TABS.map(({ key, label, icon: Icon }) => (
             <button
               key={key}
               onClick={() => setActiveTab(key)}
-              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-[var(--radius-sm)]
-          text-sm font-semibold transition-all duration-200 ${
+              className={`relative flex items-center gap-2 px-4 py-2.5
+          text-sm font-bold tracking-wider uppercase transition-all duration-200
+          border-r-2 border-[var(--border)] last:border-r-0 ${
             activeTab === key
-              ? "bg-[var(--bg-card)] text-[var(--text-primary)] shadow-[var(--shadow-sm)] border border-[var(--border)]"
-              : "text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
+              ? "bg-[var(--accent)] text-white"
+              : "text-[var(--text-muted)] hover:text-[var(--text-primary)] bg-[var(--bg-card)] hover:bg-[var(--bg-subtle)]"
           }`}
             >
               <Icon size={14} />
               {label}
               {tabCounts[key] > 0 && (
                 <span
-                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                  className={`text-[10px] px-1.5 py-0.5 font-bold ${
                     activeTab === key
-                      ? "bg-[var(--accent)]/15 text-[var(--accent)]"
+                      ? "bg-white/20 text-white"
                       : "bg-[var(--border)] text-[var(--text-muted)]"
                   }`}
                 >
@@ -576,7 +572,7 @@ export default function ExperienceTimeline() {
         </div>
       </SectionReveal>
 
-      {/* Tab content — max-w-4xl keeps timeline readable on wide screens */}
+      {/* Tab content */}
       <div className="max-w-4xl">
         <AnimatePresence mode="wait">
           <motion.div

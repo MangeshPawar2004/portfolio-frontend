@@ -11,25 +11,21 @@ const HIGHLIGHTS = [
     icon: Code2,
     label: 'Full Stack',
     desc: 'React, Node.js, .NET — end to end.',
-    color: { bg: '#1a2e4a', icon: '#3B82F6', hover: '#2563EB' },
   },
   {
     icon: Brain,
     label: 'AI / GenAI',
     desc: 'LangChain, FAISS, Python pipelines.',
-    color: { bg: '#2d1f3d', icon: '#A78BFA', hover: '#8B5CF6' },
   },
   {
     icon: Server,
     label: 'Cloud & Infra',
     desc: 'Azure Functions, Cosmos DB, SQL Server.',
-    color: { bg: '#1f2d1a', icon: '#34D399', hover: '#10B981' },
   },
   {
     icon: Zap,
     label: 'Blockchain',
     desc: 'Solidity, Hardhat, Ethers.js.',
-    color: { bg: '#2d1f0d', icon: '#F59E0B', hover: '#D97706' },
   },
 ]
 
@@ -73,21 +69,22 @@ export default function About() {
             </FadeIn>
           )}
 
-          {/* ── Stat grid ── */}
+          {/* ── Stat grid — boxy ── */}
           <FadeIn delay={0.25}>
-            <div className="mt-10 grid grid-cols-2 gap-4">
+            <div className="mt-10 grid grid-cols-2 gap-3">
               {QUICK_FACTS.map(({ label, value }) => (
                 <div
                   key={label}
-                  className="p-4 rounded-[var(--radius-md)] bg-[var(--bg-card)]
-                             border border-[var(--border)] hover:border-[var(--border-hover)]
+                  className="p-4 bg-[var(--bg-card)]
+                             border-2 border-[var(--border)]
+                             hover:border-[var(--text-primary)]
                              transition-colors duration-200"
                 >
-                  <p className="text-[10px] font-bold uppercase tracking-[0.1em]
+                  <p className="text-[10px] font-black uppercase tracking-[0.12em]
                                 text-[var(--accent)] mb-1.5">
                     {label}
                   </p>
-                  <p className="text-sm font-medium text-[var(--text-primary)] leading-snug">
+                  <p className="text-sm font-semibold text-[var(--text-primary)] leading-snug">
                     {value}
                   </p>
                 </div>
@@ -99,23 +96,24 @@ export default function About() {
         {/* ── Right column ──────────────────────────── */}
         <div className="space-y-6">
 
-          {/* Highlight cards */}
-          <StaggerContainer className="grid grid-cols-2 gap-4">
-            {HIGHLIGHTS.map(({ icon: Icon, label, desc, color }) => (
+          {/* Highlight cards — boxy */}
+          <StaggerContainer className="grid grid-cols-2 gap-3">
+            {HIGHLIGHTS.map(({ icon: Icon, label, desc }) => (
               <StaggerItem key={label}>
                 <div
-                  className="p-5 rounded-[var(--radius-md)] border border-[var(--border)]
+                  className="p-5 border-2 border-[var(--border)]
                              bg-[var(--bg-card)] group cursor-default
-                             hover:border-[var(--border-hover)] transition-all duration-200
+                             hover:border-[var(--text-primary)]
+                             transition-all duration-200
                              hover:-translate-y-1 hover:shadow-[var(--shadow-md)]"
                 >
                   {/* Icon */}
                   <div
-                    className="w-10 h-10 rounded-[var(--radius-sm)] flex items-center
-                               justify-center mb-4 transition-colors duration-200"
-                    style={{ backgroundColor: color.bg }}
+                    className="w-10 h-10 flex items-center
+                               justify-center mb-4 bg-[var(--accent-light)]
+                               border-2 border-[var(--accent-muted)]"
                   >
-                    <Icon size={18} style={{ color: color.icon }} />
+                    <Icon size={18} className="text-[var(--accent)]" />
                   </div>
 
                   <h4 className="text-sm font-bold text-[var(--text-primary)] mb-1">
@@ -132,9 +130,9 @@ export default function About() {
           {/* Specialities — inside its own card */}
           {settings?.aboutSpecialities?.length > 0 && (
             <FadeIn delay={0.3}>
-              <div className="p-5 rounded-[var(--radius-md)] border border-[var(--border)]
-                             bg-[var(--bg-card)]">
-                <p className="text-[10px] font-bold uppercase tracking-[0.1em]
+              <div className="p-5 border-2 border-[var(--border)]
+                              bg-[var(--bg-card)]">
+                <p className="text-[10px] font-black uppercase tracking-[0.12em]
                               text-[var(--text-muted)] mb-3">
                   Specialities
                 </p>
@@ -142,9 +140,9 @@ export default function About() {
                   {settings.aboutSpecialities.map((s) => (
                     <span
                       key={s}
-                      className="px-3 py-1 rounded-full text-xs font-medium
+                      className="px-3 py-1 text-xs font-semibold
                                  bg-[var(--bg-subtle)] text-[var(--text-secondary)]
-                                 border border-[var(--border)]"
+                                 border-2 border-[var(--border)]"
                     >
                       {s}
                     </span>

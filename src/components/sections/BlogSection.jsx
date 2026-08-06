@@ -21,12 +21,12 @@ function BlogCard({ post, featured = false }) {
         <motion.article
             whileHover={{ y: -4 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className={`group flex flex-col rounded-[var(--radius-lg)]
-                  bg-[var(--bg-card)] border border-[var(--border)]
+            className={`group flex flex-col
+                  bg-[var(--bg-card)] border-2 border-[var(--border)]
                   overflow-hidden h-full
-                  hover:border-[var(--border-hover)]
+                  hover:border-[var(--text-primary)]
                   hover:shadow-[var(--shadow-md)]
-                  transition-all duration-250
+                  transition-all duration-200
                   ${featured ? 'lg:flex-row' : ''}`}
         >
             {/* Cover image */}
@@ -48,17 +48,17 @@ function BlogCard({ post, featured = false }) {
                 </div>
             )}
 
-            {/* No cover — category-colored header strip */}
+            {/* No cover — accent header strip */}
             {!coverImage && (
                 <div
-                    className={`bg-gradient-to-br from-[var(--accent-muted)] to-[var(--bg-subtle)]
+                    className={`bg-[var(--accent-light)]
                       flex items-end p-5 flex-shrink-0
                       ${featured ? 'lg:w-2/5 h-52 lg:h-auto' : 'h-28'}`}
                 >
                     {category && (
                         <span className="text-xs font-bold uppercase tracking-[0.12em]
-                             text-[var(--accent)] px-2.5 py-1 rounded-full
-                             bg-[var(--accent)]/10 border border-[var(--accent)]/20">
+                             text-[var(--accent)] px-2.5 py-1
+                             bg-white border-2 border-[var(--accent)]">
                             {category}
                         </span>
                     )}
@@ -70,9 +70,8 @@ function BlogCard({ post, featured = false }) {
 
                 {/* Category + read time */}
                 <div className="flex items-center gap-3 mb-3">
-                    {category && !coverImage && null}
                     {category && coverImage && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider
+                        <span className="text-[10px] font-bold uppercase tracking-[0.12em]
                              text-[var(--accent)]">
                             {category}
                         </span>
@@ -111,9 +110,9 @@ function BlogCard({ post, featured = false }) {
                         {tags.slice(0, 3).map((tag) => (
                             <span
                                 key={tag}
-                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded
-                           text-[10px] font-mono text-[var(--text-muted)]
-                           bg-[var(--bg-subtle)] border border-[var(--border)]"
+                                className="inline-flex items-center gap-1 px-2 py-0.5
+                           text-[10px] font-mono font-semibold text-[var(--text-muted)]
+                           bg-[var(--bg-subtle)] border-2 border-[var(--border)]"
                             >
                                 <Tag size={8} />
                                 {tag}
@@ -125,9 +124,9 @@ function BlogCard({ post, featured = false }) {
                 {/* Read more */}
                 <Link
                     to={`/blog/${slug}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold
+                    className="inline-flex items-center gap-1.5 text-xs font-bold
                      text-[var(--accent)] hover:text-[var(--accent-hover)]
-                     transition-colors duration-200 mt-auto"
+                     transition-colors duration-200 mt-auto tracking-wider uppercase"
                 >
                     Read article
                     <ArrowRight size={12}
@@ -141,8 +140,8 @@ function BlogCard({ post, featured = false }) {
 // ── Skeleton card ──────────────────────────────────────────────
 function BlogCardSkeleton() {
     return (
-        <div className="rounded-[var(--radius-lg)] bg-[var(--bg-card)]
-                    border border-[var(--border)] overflow-hidden">
+        <div className="bg-[var(--bg-card)]
+                    border-2 border-[var(--border)] overflow-hidden">
             <Skeleton className="h-44 w-full rounded-none" />
             <div className="p-5 space-y-3">
                 <Skeleton className="h-3 w-1/3" />
@@ -164,7 +163,7 @@ export default function BlogSection() {
     const [featured, ...rest] = posts
 
     return (
-        <section id="blog" className="section border-t border-[var(--border)]">
+        <section id="blog" className="section border-t-2 border-[var(--border)]">
             <div className="container">
 
                 <SectionReveal>
@@ -178,7 +177,7 @@ export default function BlogSection() {
                         <Link
                             to="/blog"
                             className="flex-shrink-0 inline-flex items-center gap-2 text-sm
-                         font-semibold text-[var(--accent)]
+                         font-bold text-[var(--accent)] tracking-wider uppercase
                          hover:text-[var(--accent-hover)] transition-colors"
                         >
                             All posts <ArrowRight size={14} />
@@ -202,18 +201,18 @@ export default function BlogSection() {
                     </div>
                 )}
 
-                {/* Posts grid — featured post is full-width on first row */}
+                {/* Posts grid */}
                 {!isLoading && !isError && posts.length > 0 && (
                     <StaggerContainer className="space-y-6">
 
-                        {/* Featured post — spans full width */}
+                        {/* Featured post — full width */}
                         {featured && (
                             <StaggerItem>
                                 <BlogCard post={featured} featured />
                             </StaggerItem>
                         )}
 
-                        {/* Remaining posts — 3-column grid */}
+                        {/* Remaining — 3-column grid */}
                         {rest.length > 0 && (
                             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {rest.map((post) => (

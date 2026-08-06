@@ -15,16 +15,16 @@ const FILTERS = [
 
 function ProjectCardSkeleton() {
   return (
-    <div className="rounded-[var(--radius-lg)] bg-[var(--bg-card)]
-                    border border-[var(--border)] overflow-hidden">
+    <div className="bg-[var(--bg-card)]
+                    border-2 border-[var(--border)] overflow-hidden">
       <Skeleton className="h-48 w-full rounded-none" />
       <div className="p-5 space-y-3">
         <Skeleton className="h-4 w-3/4" />
         <Skeleton className="h-3 w-full" />
         <Skeleton className="h-3 w-5/6" />
-        <div className="flex gap-2 pt-3 border-t border-[var(--border)]">
-          <Skeleton className="h-5 w-16 rounded" />
-          <Skeleton className="h-5 w-14 rounded" />
+        <div className="flex gap-2 pt-3 border-t-2 border-[var(--border)]">
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-5 w-14" />
         </div>
       </div>
     </div>
@@ -56,8 +56,9 @@ export default function ProjectsSection() {
       <SectionReveal>
         <div className="mb-10">
           {/* Eyebrow */}
-          <p className="text-xs font-bold tracking-[0.15em] uppercase
-                        text-[var(--accent)] mb-4">
+          <p className="text-[11px] font-black tracking-[0.2em] uppercase
+                        text-[var(--accent)] mb-4 flex items-center gap-2">
+            <span className="w-8 h-[2px] bg-[var(--accent)] inline-block" />
             Projects
           </p>
 
@@ -68,9 +69,9 @@ export default function ProjectsSection() {
               Things I've built.
             </h2>
 
-            {/* Filter tabs — right of heading on desktop */}
-            <div className="flex items-center gap-1 p-1 rounded-[var(--radius-md)]
-                            bg-[var(--bg-card)] border border-[var(--border)]
+            {/* Filter tabs — boxy, sharp */}
+            <div className="flex items-center gap-0
+                            border-2 border-[var(--border)]
                             self-start sm:self-auto flex-shrink-0">
               {FILTERS.map(({ key, label }) => {
                 const count = key === 'all'
@@ -82,13 +83,14 @@ export default function ProjectsSection() {
                     key={key}
                     onClick={() => setActiveFilter(key)}
                     disabled={count === 0 && key !== 'all'}
-                    className={`px-3.5 py-2 rounded-[var(--radius-sm)] text-xs font-semibold
-                                transition-all duration-200 ${
+                    className={`px-4 py-2.5 text-xs font-bold tracking-wider uppercase
+                                transition-all duration-200 border-r-2 border-[var(--border)]
+                                last:border-r-0 ${
                       activeFilter === key
-                        ? 'bg-[var(--accent)] text-white shadow-sm'
+                        ? 'bg-[var(--accent)] text-white'
                         : count === 0
-                        ? 'text-[var(--border-hover)] cursor-not-allowed'
-                        : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                        ? 'text-[var(--border-hover)] cursor-not-allowed bg-[var(--bg-card)]'
+                        : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] bg-[var(--bg-card)] hover:bg-[var(--bg-subtle)]'
                     }`}
                   >
                     {label}
@@ -124,7 +126,7 @@ export default function ProjectsSection() {
 
       {/* ── Skeletons ─────────────────────────────── */}
       {isLoading && (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 3 }).map((_, i) => (
             <ProjectCardSkeleton key={i} />
           ))}
@@ -140,7 +142,7 @@ export default function ProjectsSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22 }}
-            className={`grid gap-8 ${gridCols}`}
+            className={`grid gap-6 ${gridCols}`}
           >
             {filtered.length > 0
               ? filtered.map((project, i) => (
@@ -164,9 +166,10 @@ export default function ProjectsSection() {
         </AnimatePresence>
       )}
 
-      {/* ── Count — subtle, not competing with cards ── */}
+      {/* ── Count ── */}
       {!isLoading && filtered.length > 0 && (
-        <p className="mt-10 text-center text-[11px] text-[var(--text-muted)]">
+        <p className="mt-10 text-center text-[11px] font-semibold
+                      tracking-wider uppercase text-[var(--text-muted)]">
           {filtered.length} project{filtered.length !== 1 ? 's' : ''}
           {activeFilter !== 'all' ? ` · ${activeFilter}` : ''}
         </p>

@@ -60,23 +60,23 @@ const CONTACT_INFO = [
 function Field({ label, error, children }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-[#A1A1AA] uppercase
-                         tracking-wider mb-2">
+      <label className="block text-xs font-bold text-[var(--text-muted)] uppercase
+                         tracking-[0.12em] mb-2">
         {label}
       </label>
       {children}
       {error && (
-        <p className="mt-1.5 text-xs text-[#EF4444]">{error}</p>
+        <p className="mt-1.5 text-xs text-[var(--error)] font-semibold">{error}</p>
       )}
     </div>
   )
 }
 
 const inputClass = `
-  w-full px-4 py-3 rounded-xl text-sm text-[#F5F5F5]
-  bg-[#111111] border border-[#242424]
-  placeholder:text-[#3a3a3a]
-  focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6]/30
+  w-full px-4 py-3 text-sm text-[var(--text-primary)]
+  bg-[var(--bg-base)] border-2 border-[var(--border)]
+  placeholder:text-[var(--text-muted)]
+  focus:outline-none focus:border-[var(--accent)]
   transition-colors duration-200
 `
 
@@ -108,7 +108,7 @@ export default function Contact() {
         subtitle="Open to AI Engineer and Full Stack Developer roles. Also happy to chat about interesting projects."
       />
 
-      {/* 40/60 explicit layout: info sidebar | form */}
+      {/* 40/60 layout: info sidebar | form */}
       <div className="mt-14 grid lg:grid-cols-[2fr_3fr] gap-12">
 
         {/* ── Left sidebar — contact info ─────────────────── */}
@@ -116,42 +116,47 @@ export default function Contact() {
 
           {CONTACT_INFO.map(({ icon: Icon, label, value, href }) => (
             <div key={label}
-              className="flex items-start gap-4 p-5 rounded-xl bg-[#111111]
-                         border border-[#242424] hover:border-[#3a3a3a] transition-colors">
-              <div className="w-9 h-9 rounded-lg bg-[#1d3f6e] flex items-center
-                              justify-center flex-shrink-0">
-                <Icon size={15} className="text-[#3B82F6]" />
+              className="flex items-start gap-4 p-5 bg-[var(--bg-card)]
+                         border-2 border-[var(--border)]
+                         hover:border-[var(--text-primary)] transition-colors">
+              <div className="w-9 h-9 flex items-center
+                              justify-center flex-shrink-0
+                              bg-[var(--accent-light)] border-2 border-[var(--accent-muted)]">
+                <Icon size={15} className="text-[var(--accent)]" />
               </div>
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wider
-                               text-[#71717A] mb-0.5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.12em]
+                               text-[var(--text-muted)] mb-0.5">
                   {label}
                 </p>
                 {href ? (
                   <a href={href}
                     target={href.startsWith('http') ? '_blank' : undefined}
                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="text-sm text-[#A1A1AA] hover:text-[#3B82F6] transition-colors break-all">
+                    className="text-sm text-[var(--text-secondary)]
+                               hover:text-[var(--accent)] transition-colors break-all">
                     {value}
                   </a>
                 ) : (
-                  <p className="text-sm text-[#A1A1AA]">{value}</p>
+                  <p className="text-sm text-[var(--text-secondary)]">{value}</p>
                 )}
               </div>
             </div>
           ))}
 
           {/* Availability note */}
-          <div className="p-5 rounded-xl bg-[#0d2e1f] border border-[#1a4d35]">
+          <div className="p-5 bg-[var(--success-muted)] border-2 border-[var(--success)]">
             <div className="flex items-center gap-2 mb-2">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full
-                                 rounded-full bg-[#10B981] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]" />
+                <span className="pulse-ring absolute inline-flex h-full w-full
+                                 bg-[var(--success)]" style={{ borderRadius: '50%' }} />
+                <span className="relative inline-flex h-2 w-2 bg-[var(--success)]"
+                      style={{ borderRadius: '50%' }} />
               </span>
-              <span className="text-xs font-semibold text-[#10B981]">Available</span>
+              <span className="text-xs font-bold text-[var(--success)]
+                               tracking-wider uppercase">Available</span>
             </div>
-            <p className="text-xs text-[#A1A1AA] leading-relaxed">
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
               Open to AI Engineer and Full Stack Developer roles.
               Response within 24 hours.
             </p>
@@ -160,7 +165,7 @@ export default function Contact() {
 
         {/* ── Right — contact form ─────────────────────────── */}
         <FadeIn direction="left" delay={0.1}>
-          <div className="p-10 rounded-2xl bg-[#111111] border border-[#242424]">
+          <div className="p-10 bg-[var(--bg-card)] border-2 border-[var(--border)]">
 
             {isSuccess ? (
               <motion.div
@@ -168,15 +173,15 @@ export default function Contact() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="flex flex-col items-center text-center py-12 gap-4"
               >
-                <div className="w-16 h-16 rounded-full bg-[#0d2e1f] border border-[#1a4d35]
+                <div className="w-16 h-16 bg-[var(--success-muted)] border-2 border-[var(--success)]
                                 flex items-center justify-center">
-                  <Send size={24} className="text-[#10B981]" />
+                  <Send size={24} className="text-[var(--success)]" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-[#F5F5F5] mb-2">
+                  <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">
                     Message sent!
                   </h3>
-                  <p className="text-sm text-[#71717A]">
+                  <p className="text-sm text-[var(--text-muted)]">
                     Thanks for reaching out. I'll get back to you within 24 hours.
                   </p>
                 </div>
@@ -224,9 +229,10 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3.5
-                             rounded-xl text-sm font-semibold
-                             bg-[#3B82F6] text-white hover:bg-[#2563EB]
+                  className="w-full flex items-center justify-center gap-2 px-6 py-4
+                             text-sm font-bold tracking-wider uppercase
+                             bg-[var(--accent)] text-white border-2 border-[var(--accent)]
+                             hover:bg-[var(--accent-hover)] hover:border-[var(--accent-hover)]
                              disabled:opacity-60 disabled:cursor-not-allowed
                              transition-all duration-200"
                 >
@@ -247,7 +253,7 @@ export default function Contact() {
                   )}
                 </button>
 
-                <p className="text-center text-xs text-[#3a3a3a]">
+                <p className="text-center text-xs text-[var(--text-muted)]">
                   No spam, no newsletters. Just a direct reply from me.
                 </p>
 

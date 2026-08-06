@@ -1,35 +1,15 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext } from 'react'
 
 const ThemeContext = createContext()
 
+/**
+ * ThemeProvider — locked to light mode for the boxy off-white design.
+ * The toggle and isDark are kept for API compatibility but do nothing.
+ */
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => {
-    // Priority: localStorage → system preference → dark
-    if (typeof window === 'undefined') return 'dark'
-    const saved = localStorage.getItem('portfolio-theme')
-    if (saved === 'light' || saved === 'dark') return saved
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  })
-
-  useEffect(() => {
-    const root = document.documentElement
-    root.setAttribute('data-theme', theme)
-    localStorage.setItem('portfolio-theme', theme)
-  }, [theme])
-
-  // Listen for system changes
-  useEffect(() => {
-    const saved = localStorage.getItem('portfolio-theme')
-    if (saved) return // user overrode, don't follow system
-
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const handler = (e) => setTheme(e.matches ? 'dark' : 'light')
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
-
-  const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))
-  const isDark = theme === 'dark'
+  const theme = 'light'
+  const isDark = false
+  const toggle = () => {} // no-op — single theme
 
   return (
     <ThemeContext.Provider value={{ theme, toggle, isDark }}>

@@ -4,9 +4,9 @@ import { cn } from '@/lib/utils'
  * Section — shared layout wrapper for every page section.
  *
  * Provides:
- *  - Consistent vertical spacing (.section → clamp 7rem–9rem)
- *  - Shared max-width container (1440px) with responsive horizontal padding
- *  - Optional top border divider
+ *  - Consistent vertical spacing (.section → clamp 6rem–9rem)
+ *  - Shared max-width container (1280px) with responsive horizontal padding
+ *  - Optional top border divider (2px solid)
  *  - id passthrough for anchor navigation
  *
  * Usage:
@@ -31,7 +31,7 @@ export default function Section({
       id={id}
       className={cn(
         'section',
-        !noBorder && 'border-t border-[var(--border)]',
+        !noBorder && 'border-t-2 border-[var(--border)]',
         className
       )}
     >
