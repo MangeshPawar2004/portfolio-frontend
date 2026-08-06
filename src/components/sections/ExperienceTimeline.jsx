@@ -1,42 +1,52 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, Calendar, ChevronDown, ExternalLink, Briefcase, GraduationCap, Award } from 'lucide-react'
-import { useExperience } from '@/hooks/useExperience'
-import { useEducation } from '@/hooks/useEducation'
-import { useCertificates } from '@/hooks/useCertificates'
-import SectionHeading from '@/components/ui/SectionHeading'
-import Badge from '@/components/ui/Badge'
-import Skeleton from '@/components/ui/Skeleton'
-import SectionReveal from '@/components/animations/SectionReveal'
-import { formatDate } from '@/lib/utils'
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  MapPin,
+  Calendar,
+  ChevronDown,
+  ExternalLink,
+  Briefcase,
+  GraduationCap,
+  Award,
+} from "lucide-react";
+import { useExperience } from "@/hooks/useExperience";
+import { useEducation } from "@/hooks/useEducation";
+import { useCertificates } from "@/hooks/useCertificates";
+import SectionHeading from "@/components/ui/SectionHeading";
+import Badge from "@/components/ui/Badge";
+import Skeleton from "@/components/ui/Skeleton";
+import SectionReveal from "@/components/animations/SectionReveal";
+import { formatDate } from "@/lib/utils";
 
 // ── Employment type badge variant ──────────────────────────────
 const EMP_TYPE_VARIANT = {
-  'full-time':  'success',
-  'internship': 'accent',
-  'freelance':  'purple',
-  'contract':   'warning',
-  'part-time':  'default',
-}
+  "full-time": "success",
+  internship: "accent",
+  freelance: "purple",
+  contract: "warning",
+  "part-time": "default",
+};
 
 // ── Tab config ─────────────────────────────────────────────────
 const TABS = [
-  { key: 'experience',   label: 'Experience', icon: Briefcase },
-  { key: 'education',    label: 'Education',  icon: GraduationCap },
-  { key: 'certificates', label: 'Awards',     icon: Award },
-]
+  { key: "experience", label: "Experience", icon: Briefcase },
+  { key: "education", label: "Education", icon: GraduationCap },
+  { key: "certificates", label: "Awards", icon: Award },
+];
 
 // ── Duration calculator ────────────────────────────────────────
 function getDuration(startDate, endDate, isCurrent) {
-  if (!startDate) return null
-  const start = new Date(startDate)
-  const end = isCurrent ? new Date() : (endDate ? new Date(endDate) : new Date())
-  const months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth())
-  if (months < 1) return '< 1 mo'
-  if (months < 12) return `${months} mo`
-  const years = Math.floor(months / 12)
-  const rem = months % 12
-  return rem > 0 ? `${years}y ${rem}mo` : `${years}y`
+  if (!startDate) return null;
+  const start = new Date(startDate);
+  const end = isCurrent ? new Date() : endDate ? new Date(endDate) : new Date();
+  const months =
+    (end.getFullYear() - start.getFullYear()) * 12 +
+    (end.getMonth() - start.getMonth());
+  if (months < 1) return "< 1 mo";
+  if (months < 12) return `${months} mo`;
+  const years = Math.floor(months / 12);
+  const rem = months % 12;
+  return rem > 0 ? `${years}y ${rem}mo` : `${years}y`;
 }
 
 // ── Timeline dot ───────────────────────────────────────────────
@@ -52,37 +62,49 @@ function TimelineDot({ isCurrent }) {
         <div className="w-3 h-3 rounded-full border-2 border-[#3B82F6] bg-[var(--bg-base)]" />
       )}
     </div>
-  )
+  );
 }
 
 // ── Experience Item ────────────────────────────────────────────
 function ExperienceItem({ item, index }) {
-  const [expanded, setExpanded] = useState(index === 0) // First item open by default
+  const [expanded, setExpanded] = useState(index === 0); // First item open by default
 
   const hasDetails =
-    (item.responsibilities?.length > 0) ||
-    (item.achievements?.length > 0) ||
-    (item.techStack?.length > 0)
+    item.responsibilities?.length > 0 ||
+    item.achievements?.length > 0 ||
+    item.techStack?.length > 0;
 
   return (
     <motion.div
       initial={{ opacity: 0, x: -16 }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.45, delay: index * 0.07, ease: [0.21, 0.47, 0.32, 0.98] }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{
+        duration: 0.45,
+        delay: index * 0.07,
+        ease: [0.21, 0.47, 0.32, 0.98],
+      }}
       className="flex gap-5"
     >
       {/* Timeline track */}
       <div className="flex flex-col items-center">
         <TimelineDot isCurrent={item.isCurrent} />
-        <div className="w-px flex-1 bg-[var(--border)] mt-3" />
+        <div
+          className="w-px flex-1 mt-3"
+          style={{
+            background:
+              "linear-gradient(to bottom, var(--border-hover), transparent)",
+          }}
+        />{" "}
       </div>
 
       {/* Card */}
       <div className="pb-8 w-full min-w-0">
         <div
           className={`card p-5 transition-all duration-200 ${
-            hasDetails ? 'cursor-pointer hover:border-[var(--border-hover)]' : ''
+            hasDetails
+              ? "cursor-pointer hover:border-[var(--border-hover)]"
+              : ""
           }`}
           onClick={() => hasDetails && setExpanded((e) => !e)}
         >
@@ -115,14 +137,14 @@ function ExperienceItem({ item, index }) {
                 )}
 
                 {item.employmentType && (
-                  <Badge variant={EMP_TYPE_VARIANT[item.employmentType] || 'default'}>
+                  <Badge
+                    variant={EMP_TYPE_VARIANT[item.employmentType] || "default"}
+                  >
                     {item.employmentType}
                   </Badge>
                 )}
 
-                {item.isCurrent && (
-                  <Badge variant="success">Current</Badge>
-                )}
+                {item.isCurrent && <Badge variant="success">Current</Badge>}
               </div>
             </div>
 
@@ -142,10 +164,11 @@ function ExperienceItem({ item, index }) {
           <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-[var(--text-muted)]">
             <span className="flex items-center gap-1">
               <Calendar size={11} />
-              {formatDate(item.startDate)} — {item.isCurrent ? 'Present' : formatDate(item.endDate)}
+              {formatDate(item.startDate)} —{" "}
+              {item.isCurrent ? "Present" : formatDate(item.endDate)}
             </span>
 
-            {(item.startDate) && (
+            {item.startDate && (
               <span className="text-[var(--accent)]">
                 {getDuration(item.startDate, item.endDate, item.isCurrent)}
               </span>
@@ -156,7 +179,9 @@ function ExperienceItem({ item, index }) {
                 <MapPin size={11} />
                 {item.location}
                 {item.locationType && (
-                  <span className="capitalize opacity-70">· {item.locationType}</span>
+                  <span className="capitalize opacity-70">
+                    · {item.locationType}
+                  </span>
                 )}
               </span>
             )}
@@ -174,24 +199,30 @@ function ExperienceItem({ item, index }) {
             {expanded && hasDetails && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
+                animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.28, ease: [0.21, 0.47, 0.32, 0.98] }}
                 className="overflow-hidden"
               >
                 <div className="mt-4 pt-4 border-t border-[var(--border)] space-y-4">
-
                   {/* Responsibilities */}
                   {item.responsibilities?.length > 0 && (
                     <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-widest
-                                   text-[var(--text-muted)] mb-2">
+                      <p
+                        className="text-[10px] font-semibold uppercase tracking-widest
+                                   text-[var(--text-muted)] mb-2"
+                      >
                         Responsibilities
                       </p>
                       <ul className="space-y-1.5">
                         {item.responsibilities.map((r, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
-                            <span className="text-[#3B82F6] mt-1.5 flex-shrink-0">›</span>
+                          <li
+                            key={i}
+                            className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
+                          >
+                            <span className="text-[#3B82F6] mt-1.5 flex-shrink-0">
+                              ›
+                            </span>
                             {r}
                           </li>
                         ))}
@@ -202,13 +233,18 @@ function ExperienceItem({ item, index }) {
                   {/* Achievements */}
                   {item.achievements?.length > 0 && (
                     <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-widest
-                                   text-[var(--text-muted)] mb-2">
+                      <p
+                        className="text-[10px] font-semibold uppercase tracking-widest
+                                   text-[var(--text-muted)] mb-2"
+                      >
                         Achievements
                       </p>
                       <ul className="space-y-1.5">
                         {item.achievements.map((a, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-[#10B981]">
+                          <li
+                            key={i}
+                            className="flex items-start gap-2 text-sm text-[#10B981]"
+                          >
                             <span className="mt-1.5 flex-shrink-0">✦</span>
                             {a}
                           </li>
@@ -220,8 +256,10 @@ function ExperienceItem({ item, index }) {
                   {/* Tech stack */}
                   {item.techStack?.length > 0 && (
                     <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-widest
-                                   text-[var(--text-muted)] mb-2">
+                      <p
+                        className="text-[10px] font-semibold uppercase tracking-widest
+                                   text-[var(--text-muted)] mb-2"
+                      >
                         Stack
                       </p>
                       <div className="flex flex-wrap gap-1.5">
@@ -238,7 +276,6 @@ function ExperienceItem({ item, index }) {
                       </div>
                     </div>
                   )}
-
                 </div>
               </motion.div>
             )}
@@ -246,7 +283,7 @@ function ExperienceItem({ item, index }) {
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
 
 // ── Education Item ─────────────────────────────────────────────
@@ -255,7 +292,7 @@ function EducationItem({ item, index }) {
     <motion.div
       initial={{ opacity: 0, x: -16 }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
+      viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.45, delay: index * 0.07 }}
       className="flex gap-5"
     >
@@ -270,7 +307,10 @@ function EducationItem({ item, index }) {
           <h3 className="text-base font-semibold text-[var(--text-primary)] mb-1 leading-snug">
             {item.degree}
             {item.fieldOfStudy && (
-              <span className="text-[var(--text-muted)] font-normal"> in {item.fieldOfStudy}</span>
+              <span className="text-[var(--text-muted)] font-normal">
+                {" "}
+                in {item.fieldOfStudy}
+              </span>
             )}
           </h3>
 
@@ -287,14 +327,17 @@ function EducationItem({ item, index }) {
               <ExternalLink size={11} />
             </a>
           ) : (
-            <p className="text-sm font-medium text-[var(--text-secondary)]">{item.institution}</p>
+            <p className="text-sm font-medium text-[var(--text-secondary)]">
+              {item.institution}
+            </p>
           )}
 
           {/* Meta */}
           <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-[var(--text-muted)]">
             <span className="flex items-center gap-1">
               <Calendar size={11} />
-              {item.startYear} — {item.isOngoing ? 'Ongoing' : (item.endYear ?? '—')}
+              {item.startYear} —{" "}
+              {item.isOngoing ? "Ongoing" : (item.endYear ?? "—")}
             </span>
             {item.grade && (
               <span className="text-[#10B981] font-medium">
@@ -314,8 +357,10 @@ function EducationItem({ item, index }) {
           {/* Relevant courses */}
           {item.relevantCourses?.length > 0 && (
             <div className="mt-4 pt-3 border-t border-[var(--border)]">
-              <p className="text-[10px] font-semibold uppercase tracking-widest
-                           text-[var(--text-muted)] mb-2">
+              <p
+                className="text-[10px] font-semibold uppercase tracking-widest
+                           text-[var(--text-muted)] mb-2"
+              >
                 Relevant Courses
               </p>
               <div className="flex flex-wrap gap-1.5">
@@ -334,27 +379,27 @@ function EducationItem({ item, index }) {
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
 
 // ── Certificate Item ───────────────────────────────────────────
 const CERT_CATEGORY_STYLE = {
-  certification: { bg: '#1a2e4a', text: '#60A5FA', icon: '🏅' },
-  award:         { bg: '#2d1f0d', text: '#FBB040', icon: '🏆' },
-  hackathon:     { bg: '#2d1f3d', text: '#C4B5FD', icon: '⚡' },
-  publication:   { bg: '#0d2e1f', text: '#34D399', icon: '📝' },
-  recognition:   { bg: '#1f1a2e', text: '#F9A8D4', icon: '✨' },
-  other:         { bg: '#1a1a1a', text: '#A1A1AA', icon: '🎖️' },
-}
+  certification: { bg: "#1a2e4a", text: "#60A5FA", icon: "🏅" },
+  award: { bg: "#2d1f0d", text: "#FBB040", icon: "🏆" },
+  hackathon: { bg: "#2d1f3d", text: "#C4B5FD", icon: "⚡" },
+  publication: { bg: "#0d2e1f", text: "#34D399", icon: "📝" },
+  recognition: { bg: "#1f1a2e", text: "#F9A8D4", icon: "✨" },
+  other: { bg: "#1a1a1a", text: "#A1A1AA", icon: "🎖️" },
+};
 
 function CertificateItem({ item, index }) {
-  const style = CERT_CATEGORY_STYLE[item.category] || CERT_CATEGORY_STYLE.other
+  const style = CERT_CATEGORY_STYLE[item.category] || CERT_CATEGORY_STYLE.other;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
+      viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: index * 0.06 }}
       className="card p-4 group hover:border-[var(--border-hover)] transition-all"
     >
@@ -364,10 +409,15 @@ function CertificateItem({ item, index }) {
           className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
           style={{ backgroundColor: style.bg }}
         >
-          {item.imageUrl
-            ? <img src={item.imageUrl} alt="" className="w-6 h-6 object-contain rounded" />
-            : style.icon
-          }
+          {item.imageUrl ? (
+            <img
+              src={item.imageUrl}
+              alt=""
+              className="w-6 h-6 object-contain rounded"
+            />
+          ) : (
+            style.icon
+          )}
         </div>
 
         <div className="min-w-0 flex-1">
@@ -384,7 +434,9 @@ function CertificateItem({ item, index }) {
             {item.issueDate && (
               <span className="text-[10px] text-[var(--text-muted)]">
                 {formatDate(item.issueDate)}
-                {item.hasExpiry && item.expiryDate && ` → ${formatDate(item.expiryDate)}`}
+                {item.hasExpiry &&
+                  item.expiryDate &&
+                  ` → ${formatDate(item.expiryDate)}`}
               </span>
             )}
             {item.credentialId && (
@@ -426,7 +478,7 @@ function CertificateItem({ item, index }) {
         )}
       </div>
     </motion.div>
-  )
+  );
 }
 
 // ── Timeline skeleton ──────────────────────────────────────────
@@ -445,48 +497,44 @@ function TimelineSkeleton() {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 // ── Main ExperienceTimeline component ─────────────────────────
 export default function ExperienceTimeline() {
-  const [activeTab, setActiveTab] = useState('experience')
+  const [activeTab, setActiveTab] = useState("experience");
 
   const {
     data: expData,
     isLoading: expLoading,
     isError: expError,
-  } = useExperience()
+  } = useExperience();
 
-  const {
-    data: eduData,
-    isLoading: eduLoading,
-  } = useEducation()
+  const { data: eduData, isLoading: eduLoading } = useEducation();
 
-  const {
-    data: certData,
-    isLoading: certLoading,
-  } = useCertificates()
+  const { data: certData, isLoading: certLoading } = useCertificates();
 
-  const experiences   = expData?.data ?? []
-  const educations    = eduData?.data ?? []
-  const certificates  = certData?.data ?? []
+  const experiences = expData?.data ?? [];
+  const educations = eduData?.data ?? [];
+  const certificates = certData?.data ?? [];
 
   const tabCounts = {
-    experience:   experiences.length,
-    education:    educations.length,
+    experience: experiences.length,
+    education: educations.length,
     certificates: certificates.length,
-  }
+  };
 
   const isLoading =
-    (activeTab === 'experience' && expLoading) ||
-    (activeTab === 'education'  && eduLoading) ||
-    (activeTab === 'certificates' && certLoading)
+    (activeTab === "experience" && expLoading) ||
+    (activeTab === "education" && eduLoading) ||
+    (activeTab === "certificates" && certLoading);
 
   return (
-    <section id="experience" className="section border-t border-[var(--border)]">
+    <section
+      id="experience"
+      className="section border-t border-[var(--border)]"
+    >
       <div className="container">
-
         <SectionReveal>
           <SectionHeading
             eyebrow="Background"
@@ -497,28 +545,30 @@ export default function ExperienceTimeline() {
 
         {/* Tab bar */}
         <SectionReveal delay={0.1}>
-          <div className="flex items-center gap-1 mt-10 mb-10 p-1
-                          bg-[var(--bg-card)] border border-[var(--border)]
-                          rounded-xl w-fit">
+          <div
+            className="flex items-center gap-1 mt-10 mb-10 p-1.5
+                bg-[var(--bg-subtle)] border border-[var(--border)]
+                rounded-[var(--radius-md)] w-fit"
+          >
             {TABS.map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
-                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm
-                            font-medium transition-all ${
-                  activeTab === key
-                    ? 'bg-[#3B82F6] text-white shadow-sm'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-                }`}
+                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-[var(--radius-sm)]
+            text-sm font-semibold transition-all duration-200 ${
+              activeTab === key
+                ? "bg-[var(--bg-card)] text-[var(--text-primary)] shadow-[var(--shadow-sm)] border border-[var(--border)]"
+                : "text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
+            }`}
               >
                 <Icon size={14} />
                 {label}
                 {tabCounts[key] > 0 && (
                   <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${
+                    className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
                       activeTab === key
-                        ? 'bg-white/20 text-white'
-                        : 'bg-[var(--bg-subtle)] text-[var(--text-muted)]'
+                        ? "bg-[var(--accent)]/15 text-[var(--accent)]"
+                        : "bg-[var(--border)] text-[var(--text-muted)]"
                     }`}
                   >
                     {tabCounts[key]}
@@ -541,7 +591,7 @@ export default function ExperienceTimeline() {
             {isLoading && <TimelineSkeleton />}
 
             {/* Experience tab */}
-            {activeTab === 'experience' && !expLoading && (
+            {activeTab === "experience" && !expLoading && (
               <>
                 {expError && (
                   <p className="text-[var(--error)] text-sm py-4">
@@ -553,14 +603,15 @@ export default function ExperienceTimeline() {
                     No experience entries yet. Add some via the admin panel.
                   </p>
                 )}
-                {!expError && experiences.map((item, i) => (
-                  <ExperienceItem key={item._id} item={item} index={i} />
-                ))}
+                {!expError &&
+                  experiences.map((item, i) => (
+                    <ExperienceItem key={item._id} item={item} index={i} />
+                  ))}
               </>
             )}
 
             {/* Education tab */}
-            {activeTab === 'education' && !eduLoading && (
+            {activeTab === "education" && !eduLoading && (
               <>
                 {educations.length === 0 && (
                   <p className="text-[var(--text-muted)] text-sm py-8">
@@ -574,7 +625,7 @@ export default function ExperienceTimeline() {
             )}
 
             {/* Certificates tab */}
-            {activeTab === 'certificates' && !certLoading && (
+            {activeTab === "certificates" && !certLoading && (
               <>
                 {certificates.length === 0 && (
                   <p className="text-[var(--text-muted)] text-sm py-8">
@@ -590,8 +641,7 @@ export default function ExperienceTimeline() {
             )}
           </motion.div>
         </AnimatePresence>
-
       </div>
     </section>
-  )
+  );
 }

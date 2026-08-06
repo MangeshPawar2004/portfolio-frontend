@@ -1,165 +1,188 @@
+// src/components/sections/Hero.jsx — FULL REPLACEMENT
 import { motion } from 'framer-motion'
-import { ArrowDown, ExternalLink, Briefcase, Mail, MapPin, Zap } from 'lucide-react'
+import { ArrowRight,Mail,  MapPin } from 'lucide-react'
 import { useSettings } from '@/hooks/useSettings'
 import { SOCIAL_LINKS } from '@/constants'
-import Button from '@/components/ui/Button'
 
-// Subtle animated gradient background — no particles, no R3F
 function HeroBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-      {/* Primary glow */}
+      {/* Single centered glow — not two competing ones */}
       <div
-        className="absolute top-[-20%] left-[10%] w-[600px] h-[600px] rounded-full opacity-[0.07]"
+        className="absolute top-[-10%] left-[-5%] w-[700px] h-[700px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, #3B82F6 0%, transparent 70%)',
-          filter: 'blur(60px)',
+          background: 'radial-gradient(circle at 30% 40%, rgba(59,130,246,0.06) 0%, transparent 65%)',
         }}
       />
-      {/* Secondary glow */}
+      {/* Faint grid */}
       <div
-        className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] rounded-full opacity-[0.04]"
-        style={{
-          background: 'radial-gradient(circle, #8B5CF6 0%, transparent 70%)',
-          filter: 'blur(80px)',
-        }}
-      />
-      {/* Grid pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.025]"
+        className="absolute inset-0"
         style={{
           backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)
+            linear-gradient(var(--border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--border) 1px, transparent 1px)
           `,
-          backgroundSize: '60px 60px',
+          backgroundSize: '80px 80px',
+          opacity: 0.35,
+          maskImage: 'radial-gradient(ellipse 80% 80% at 20% 40%, black 0%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 20% 40%, black 0%, transparent 100%)',
         }}
       />
     </div>
   )
 }
 
-const containerVariants = {
+const container = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+  show: { transition: { staggerChildren: 0.11, delayChildren: 0.05 } },
 }
 
-const itemVariants = {
-  hidden:  { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] } },
+const item = {
+  hidden:  { opacity: 0, y: 22 },
+  show:    { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.21, 0.47, 0.32, 0.98] } },
 }
 
 export default function Hero() {
-  const { data: settings, isLoading } = useSettings()
+  const { data: settings } = useSettings()
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+    <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
       <HeroBackground />
 
-      <div className="container relative z-10">
+      <div className="container relative z-10 py-20">
         <motion.div
-          variants={containerVariants}
+          variants={container}
           initial="hidden"
-          animate="visible"
-          className="max-w-3xl"
+          animate="show"
+          className="max-w-2xl"
         >
 
-          {/* Availability badge */}
-          <motion.div variants={itemVariants} className="mb-6">
+          {/* ── Availability pill ── */}
+          <motion.div variants={item} className="mb-8">
             {settings?.availableForWork ? (
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full
-                               bg-[#0d2e1f] border border-[#1a4d35] text-[#10B981] text-xs font-medium">
-                <span className="relative flex h-2 w-2">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full
+                               text-xs font-semibold tracking-wide
+                               bg-[var(--success-muted)] border border-[var(--success)]/20
+                               text-[var(--success)]">
+                <span className="relative flex h-1.5 w-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full
-                                   bg-[#10B981] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]" />
+                                   bg-[var(--success)] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5
+                                   bg-[var(--success)]" />
                 </span>
                 {settings.availabilityNote || 'Open to new opportunities'}
               </span>
             ) : (
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full
-                               bg-[#161616] border border-[#242424] text-[#71717A] text-xs font-medium">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full
+                               text-xs font-medium bg-[var(--bg-subtle)]
+                               border border-[var(--border)] text-[var(--text-muted)]">
                 <MapPin size={11} />
                 Navi Mumbai, India
               </span>
             )}
           </motion.div>
 
-          {/* Name */}
-          <motion.div variants={itemVariants}>
-            <h1 className="mb-3 font-bold tracking-tight">
-              <span className="text-[#F5F5F5]">
-                {isLoading ? 'Loading...' : (settings?.heroName || 'Mangesh Pawar')}
-              </span>
+          {/* ── Name — the largest, most dominant element ── */}
+          <motion.div variants={item} className="mb-5">
+            <h1 className="font-black text-[var(--text-primary)] leading-[1.05]">
+              {settings?.heroName || 'Mangesh Pawar'}
             </h1>
           </motion.div>
 
-          {/* Title with accent */}
-          <motion.div variants={itemVariants} className="mb-5">
-            <p className="text-2xl sm:text-3xl font-semibold">
-              <span className="text-[#A1A1AA]">I build </span>
-              <span className="accent-gradient">
-                {settings?.heroTitle || 'scalable full-stack apps'}
-              </span>
-              <span className="text-[#A1A1AA]"> and AI pipelines.</span>
+          {/* ── What he does — fixed copy, accent on action not title ── */}
+          <motion.div variants={item} className="mb-6">
+            <p className="text-xl sm:text-2xl font-medium leading-relaxed text-[var(--text-secondary)]">
+              Full Stack Developer &amp; AI Engineer —{' '}
+              <span className="accent-gradient font-semibold">
+                building production systems
+              </span>{' '}
+              that actually ship.
             </p>
           </motion.div>
 
-          {/* Tagline */}
-          <motion.div variants={itemVariants} className="mb-8">
-            <p className="text-lg text-[#71717A] max-w-2xl leading-relaxed">
+          {/* ── Tagline ── */}
+          <motion.div variants={item} className="mb-10">
+            <p className="text-base text-[var(--text-muted)] max-w-lg leading-relaxed">
               {settings?.heroTagline ||
-                'Associate Full Stack Developer at Cogitate. React, Node.js, .NET, Azure, LangChain. Building production systems that scale.'}
+                'React · Node.js · .NET · Azure · LangChain. Currently at Cogitate, open to AI Engineer and Full Stack roles.'}
             </p>
           </motion.div>
 
-          {/* CTA buttons */}
-       <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 mb-10">
-  <Button as="a" href="#projects" size="lg" className="w-full sm:w-auto justify-center">
-    {settings?.heroCTAPrimary || 'View Projects'}
-    <ArrowDown size={16} />
-  </Button>
-  <Button as="a" href="#contact" variant="secondary" size="lg" className="w-full sm:w-auto justify-center">
-    {settings?.heroCTASecondary || 'Contact Me'}
-  </Button>
-</motion.div>
+          {/* ── CTAs — clear hierarchy: primary fills, secondary is ghost ── */}
+          <motion.div variants={item} className="flex flex-wrap items-center gap-3 mb-12">
+            {/* Primary — filled, high contrast */}
+            <a
+              href="#projects"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl
+                         text-sm font-semibold text-white bg-[var(--accent)]
+                         hover:bg-[var(--accent-hover)] transition-colors duration-200
+                         shadow-lg shadow-[var(--accent)]/20"
+            >
+              View Projects
+              <ArrowRight size={15} />
+            </a>
 
-          {/* Social row */}
-          <motion.div variants={itemVariants}
-            className="hidden sm:flex items-center gap-4 text-[var(--text-muted)] text-sm">
-            <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer"
-               className="flex items-center gap-1.5 hover:text-[#F5F5F5] transition-colors">
-              <ExternalLink size={15} /> GitHub
+            {/* Secondary — outlined, clearly lower priority */}
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl
+                         text-sm font-semibold text-[var(--text-secondary)]
+                         border border-[var(--border-hover)]
+                         hover:text-[var(--text-primary)] hover:border-[var(--text-muted)]
+                         transition-all duration-200"
+            >
+              Contact Me
             </a>
-            <span className="w-px h-4 bg-[#242424]" />
-            <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer"
-               className="flex items-center gap-1.5 hover:text-[#F5F5F5] transition-colors">
-              <Briefcase size={15} /> LinkedIn
-            </a>
-            <span className="w-px h-4 bg-[#242424]" />
-            <a href={SOCIAL_LINKS.email}
-               className="flex items-center gap-1.5 hover:text-[#F5F5F5] transition-colors">
-              <Mail size={15} /> Email
-            </a>
+          </motion.div>
+
+          {/* ── Social links — icons only, spaced, no separator clutter ── */}
+          <motion.div variants={item}
+            className="flex items-center gap-1">
+            {[
+              { href: SOCIAL_LINKS.github,   icon: Mail,   label: 'GitHub' },
+              { href: SOCIAL_LINKS.linkedin, icon: Mail, label: 'LinkedIn' },
+              { href: SOCIAL_LINKS.email,    icon: Mail,     label: 'Email' },
+            ].map(({ href, icon: Icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith('http') ? '_blank' : undefined}
+                rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                aria-label={label}
+                className="p-2.5 rounded-lg text-[var(--text-muted)]
+                           hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]
+                           transition-all duration-200"
+              >
+                <Icon size={17} />
+              </a>
+            ))}
+
+            <span className="mx-2 h-4 w-px bg-[var(--border)]" />
+
+            <span className="text-xs text-[var(--text-muted)]">
+              Based in India · Remote-friendly
+            </span>
           </motion.div>
 
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* ── Scroll hint — bottom center ── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        transition={{ delay: 1.8, duration: 0.6 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2
+                   flex flex-col items-center gap-2"
         aria-hidden="true"
       >
-        <span className="text-xs text-[#71717A] tracking-widest uppercase">Scroll</span>
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          className="w-5 h-8 rounded-full border border-[var(--border)]
+                     flex items-start justify-center pt-1.5"
         >
-          <ArrowDown size={14} className="text-[#71717A]" />
+          <div className="w-1 h-1.5 rounded-full bg-[var(--text-muted)]" />
         </motion.div>
       </motion.div>
     </section>
