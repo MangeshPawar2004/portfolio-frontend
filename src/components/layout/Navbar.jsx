@@ -1,3 +1,4 @@
+import CommandPaletteTrigger from '@/components/ui/CommandPaletteTrigger'
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -8,13 +9,14 @@ import { useTheme } from '@/context/ThemeContext'
 import MobileNav from '@/components/ui/MobileNav'
 import { cn } from '@/lib/utils'
 
+
 export default function Navbar() {
-  const [scrolled, setScrolled]   = useState(false)
-  const [menuOpen, setMenuOpen]   = useState(false)
-  const { toggle, isDark }        = useTheme()
-  const location                  = useLocation()
-  const { data: settings }        = useSettings()
-  const isHome                    = location.pathname === '/'
+  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const { toggle, isDark } = useTheme()
+  const location = useLocation()
+  const { data: settings } = useSettings()
+  const isHome = location.pathname === '/'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -99,6 +101,7 @@ export default function Navbar() {
             >
               <Mail size={16} />
             </a>
+            <CommandPaletteTrigger />
 
             {/* Dark mode toggle */}
             <button
