@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSkills } from '@/hooks/useSkills'
+import Section from '@/components/layout/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import Skeleton from '@/components/ui/Skeleton'
 import SectionReveal from '@/components/animations/SectionReveal'
@@ -138,16 +139,16 @@ function StatsStrip({ skills }) {
     : null
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-10">
       {[
-        { label: 'Total Skills',  value: skills.length },
-        { label: 'Categories',    value: Object.keys(byCategory).length },
+        { label: 'Total Skills',    value: skills.length },
+        { label: 'Categories',      value: Object.keys(byCategory).length },
         { label: 'Avg Proficiency', value: avgProficiency ? `${avgProficiency}%` : '—' },
-        { label: 'Featured',      value: skills.filter((s) => s.isFeatured).length },
+        { label: 'Featured',        value: skills.filter((s) => s.isFeatured).length },
       ].map(({ label, value }) => (
-        <div key={label} className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] text-center">
-          <p className="text-xl font-bold text-[var(--text-primary)]">{value}</p>
-          <p className="text-xs text-[var(--text-muted)] mt-0.5">{label}</p>
+        <div key={label} className="p-5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] text-center">
+          <p className="text-2xl font-bold text-[var(--text-primary)]">{value}</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">{label}</p>
         </div>
       ))}
     </div>
@@ -171,138 +172,136 @@ export default function Skills() {
   )
 
   return (
-    <section id="skills" className="section border-t border-[var(--border)]">
-      <div className="container">
+    <Section id="skills">
 
-        <SectionReveal>
-          <SectionHeading
-            eyebrow="Skills"
-            title="Tools I work with."
-            subtitle="Built across production systems, final-year projects, and independent learning."
-          />
-        </SectionReveal>
+      <SectionReveal>
+        <SectionHeading
+          eyebrow="Skills"
+          title="Tools I work with."
+          subtitle="Built across production systems, final-year projects, and independent learning."
+        />
+      </SectionReveal>
 
-        {/* Stats strip */}
-        {!isLoading && skills.length > 0 && (
-          <SectionReveal delay={0.1}>
-            <div className="mt-10">
-              <StatsStrip skills={skills} />
-            </div>
-          </SectionReveal>
-        )}
-
-        {/* Category filter */}
-        {!isLoading && availableCategories.length > 1 && (
-          <SectionReveal delay={0.15}>
-            <div className="flex flex-wrap gap-2 mb-8">
-              {availableCategories.map((cat) => (
-                <button
-                  key={cat.key}
-                  onClick={() => setActiveCategory(cat.key)}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                    activeCategory === cat.key
-                      ? 'bg-[#3B82F6] text-white shadow-sm shadow-[#3B82F6]/25'
-                      : 'bg-[var(--bg-card)] text-[var(--text-muted)] border border-[var(--border)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)]'
-                  }`}
-                >
-                  {cat.label}
-                  {cat.key !== 'all' && (
-                    <span className="ml-1.5 opacity-60">
-                      {skills.filter((s) => s.category === cat.key).length}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-          </SectionReveal>
-        )}
-
-        {/* Error */}
-        {isError && (
-          <p className="text-[var(--error)] py-8 text-sm">
-            Failed to load skills. Check backend connection.
-          </p>
-        )}
-
-        {/* Loading grid */}
-        {isLoading && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {Array.from({ length: 10 }).map((_, i) => <SkillCardSkeleton key={i} />)}
+      {/* Stats strip */}
+      {!isLoading && skills.length > 0 && (
+        <SectionReveal delay={0.1}>
+          <div className="mt-10">
+            <StatsStrip skills={skills} />
           </div>
-        )}
+        </SectionReveal>
+      )}
 
-        {/* Skills grid */}
-        {!isLoading && !isError && (
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.18 }}
-            >
-              <StaggerContainer
-                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+      {/* Category filter */}
+      {!isLoading && availableCategories.length > 1 && (
+        <SectionReveal delay={0.15}>
+          <div className="flex flex-wrap gap-2 mt-2 mb-8">
+            {availableCategories.map((cat) => (
+              <button
+                key={cat.key}
+                onClick={() => setActiveCategory(cat.key)}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  activeCategory === cat.key
+                    ? 'bg-[#3B82F6] text-white shadow-sm shadow-[#3B82F6]/25'
+                    : 'bg-[var(--bg-card)] text-[var(--text-muted)] border border-[var(--border)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)]'
+                }`}
               >
-                {filtered.length > 0
-                  ? filtered
-                      .sort((a, b) => (a.displayOrder ?? 99) - (b.displayOrder ?? 99))
-                      .map((skill) => (
-                        <StaggerItem key={skill._id}>
-                          <SkillCard skill={skill} />
-                        </StaggerItem>
-                      ))
-                  : (
-                      <div className="col-span-full py-16 text-center">
-                        <p className="text-[var(--text-muted)] text-sm">
-                          No skills in this category yet.
-                        </p>
-                      </div>
-                    )
-                }
-              </StaggerContainer>
-            </motion.div>
-          </AnimatePresence>
-        )}
+                {cat.label}
+                {cat.key !== 'all' && (
+                  <span className="ml-1.5 opacity-60">
+                    {skills.filter((s) => s.category === cat.key).length}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </SectionReveal>
+      )}
 
-        {/* Featured callout — shown only on "All" tab */}
-        {activeCategory === 'all' && !isLoading && skills.filter((s) => s.isFeatured).length > 0 && (
-          <SectionReveal delay={0.2}>
-            <div className="mt-10 p-5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)]">
-              <p className="text-xs font-semibold uppercase tracking-widest text-[var(--text-muted)] mb-3">
-                Core stack
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {skills
-                  .filter((s) => s.isFeatured)
-                  .sort((a, b) => (a.displayOrder ?? 99) - (b.displayOrder ?? 99))
-                  .map((s) => {
-                    const colors = CATEGORY_COLORS[s.category] || CATEGORY_COLORS.other
-                    return (
+      {/* Error */}
+      {isError && (
+        <p className="text-[var(--error)] py-8 text-sm">
+          Failed to load skills. Check backend connection.
+        </p>
+      )}
+
+      {/* Loading grid */}
+      {isLoading && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          {Array.from({ length: 12 }).map((_, i) => <SkillCardSkeleton key={i} />)}
+        </div>
+      )}
+
+      {/* Skills grid */}
+      {!isLoading && !isError && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+          >
+            <StaggerContainer
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6"
+            >
+              {filtered.length > 0
+                ? filtered
+                    .sort((a, b) => (a.displayOrder ?? 99) - (b.displayOrder ?? 99))
+                    .map((skill) => (
+                      <StaggerItem key={skill._id}>
+                        <SkillCard skill={skill} />
+                      </StaggerItem>
+                    ))
+                : (
+                    <div className="col-span-full py-16 text-center">
+                      <p className="text-[var(--text-muted)] text-sm">
+                        No skills in this category yet.
+                      </p>
+                    </div>
+                  )
+              }
+            </StaggerContainer>
+          </motion.div>
+        </AnimatePresence>
+      )}
+
+      {/* Featured callout — shown only on "All" tab */}
+      {activeCategory === 'all' && !isLoading && skills.filter((s) => s.isFeatured).length > 0 && (
+        <SectionReveal delay={0.2}>
+          <div className="mt-10 p-6 rounded-xl bg-[var(--bg-card)] border border-[var(--border)]">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[var(--text-muted)] mb-4">
+              Core stack
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {skills
+                .filter((s) => s.isFeatured)
+                .sort((a, b) => (a.displayOrder ?? 99) - (b.displayOrder ?? 99))
+                .map((s) => {
+                  const colors = CATEGORY_COLORS[s.category] || CATEGORY_COLORS.other
+                  return (
+                    <span
+                      key={s._id}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg
+                                 text-xs font-medium border"
+                      style={{
+                        backgroundColor: colors.bg,
+                        color: colors.text,
+                        borderColor: colors.dot + '40',
+                      }}
+                    >
                       <span
-                        key={s._id}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg
-                                   text-xs font-medium border"
-                        style={{
-                          backgroundColor: colors.bg,
-                          color: colors.text,
-                          borderColor: colors.dot + '40',
-                        }}
-                      >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                          style={{ backgroundColor: colors.dot }}
-                        />
-                        {s.name}
-                      </span>
-                    )
-                  })}
-              </div>
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: colors.dot }}
+                      />
+                      {s.name}
+                    </span>
+                  )
+                })}
             </div>
-          </SectionReveal>
-        )}
+          </div>
+        </SectionReveal>
+      )}
 
-      </div>
-    </section>
+    </Section>
   )
 }

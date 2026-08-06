@@ -12,6 +12,7 @@ import {
 import { useExperience } from "@/hooks/useExperience";
 import { useEducation } from "@/hooks/useEducation";
 import { useCertificates } from "@/hooks/useCertificates";
+import Section from "@/components/layout/Section";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Badge from "@/components/ui/Badge";
 import Skeleton from "@/components/ui/Skeleton";
@@ -530,56 +531,53 @@ export default function ExperienceTimeline() {
     (activeTab === "certificates" && certLoading);
 
   return (
-    <section
-      id="experience"
-      className="section border-t border-[var(--border)]"
-    >
-      <div className="container">
-        <SectionReveal>
-          <SectionHeading
-            eyebrow="Background"
-            title="Where I've been."
-            subtitle="Professional experience, education, and certifications."
-          />
-        </SectionReveal>
+    <Section id="experience">
+      <SectionReveal>
+        <SectionHeading
+          eyebrow="Background"
+          title="Where I've been."
+          subtitle="Professional experience, education, and certifications."
+        />
+      </SectionReveal>
 
-        {/* Tab bar */}
-        <SectionReveal delay={0.1}>
-          <div
-            className="flex items-center gap-1 mt-10 mb-10 p-1.5
-                bg-[var(--bg-subtle)] border border-[var(--border)]
-                rounded-[var(--radius-md)] w-fit"
-          >
-            {TABS.map(({ key, label, icon: Icon }) => (
-              <button
-                key={key}
-                onClick={() => setActiveTab(key)}
-                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-[var(--radius-sm)]
-            text-sm font-semibold transition-all duration-200 ${
-              activeTab === key
-                ? "bg-[var(--bg-card)] text-[var(--text-primary)] shadow-[var(--shadow-sm)] border border-[var(--border)]"
-                : "text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
-            }`}
-              >
-                <Icon size={14} />
-                {label}
-                {tabCounts[key] > 0 && (
-                  <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
-                      activeTab === key
-                        ? "bg-[var(--accent)]/15 text-[var(--accent)]"
-                        : "bg-[var(--border)] text-[var(--text-muted)]"
-                    }`}
-                  >
-                    {tabCounts[key]}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-        </SectionReveal>
+      {/* Tab bar */}
+      <SectionReveal delay={0.1}>
+        <div
+          className="flex items-center gap-1 mt-8 mb-10 p-1.5
+              bg-[var(--bg-subtle)] border border-[var(--border)]
+              rounded-[var(--radius-md)] w-fit"
+        >
+          {TABS.map(({ key, label, icon: Icon }) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-[var(--radius-sm)]
+          text-sm font-semibold transition-all duration-200 ${
+            activeTab === key
+              ? "bg-[var(--bg-card)] text-[var(--text-primary)] shadow-[var(--shadow-sm)] border border-[var(--border)]"
+              : "text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
+          }`}
+            >
+              <Icon size={14} />
+              {label}
+              {tabCounts[key] > 0 && (
+                <span
+                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                    activeTab === key
+                      ? "bg-[var(--accent)]/15 text-[var(--accent)]"
+                      : "bg-[var(--border)] text-[var(--text-muted)]"
+                  }`}
+                >
+                  {tabCounts[key]}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+      </SectionReveal>
 
-        {/* Tab content */}
+      {/* Tab content — max-w-4xl keeps timeline readable on wide screens */}
+      <div className="max-w-4xl">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -632,7 +630,7 @@ export default function ExperienceTimeline() {
                     No certificates yet.
                   </p>
                 )}
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 gap-6">
                   {certificates.map((item, i) => (
                     <CertificateItem key={item._id} item={item} index={i} />
                   ))}
@@ -642,6 +640,6 @@ export default function ExperienceTimeline() {
           </motion.div>
         </AnimatePresence>
       </div>
-    </section>
+    </Section>
   );
 }

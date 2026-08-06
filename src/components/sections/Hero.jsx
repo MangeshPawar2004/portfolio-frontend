@@ -1,6 +1,5 @@
-// src/components/sections/Hero.jsx — FULL REPLACEMENT
 import { motion } from 'framer-motion'
-import { ArrowRight,Mail,  MapPin } from 'lucide-react'
+import { ArrowRight, Mail, MapPin } from 'lucide-react'
 import { useSettings } from '@/hooks/useSettings'
 import { SOCIAL_LINKS } from '@/constants'
 
@@ -46,15 +45,16 @@ export default function Hero() {
   const { data: settings } = useSettings()
 
   return (
-    <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
+    <section className="relative min-h-[90vh] flex items-center pt-16 overflow-hidden">
       <HeroBackground />
 
-      <div className="container relative z-10 py-20">
+      {/* Full-width container for proper alignment with rest of page */}
+      <div className="container relative z-10 py-24">
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="max-w-2xl"
+          className="max-w-3xl"
         >
 
           {/* ── Availability pill ── */}
@@ -83,7 +83,7 @@ export default function Hero() {
           </motion.div>
 
           {/* ── Name — the largest, most dominant element ── */}
-          <motion.div variants={item} className="mb-5">
+          <motion.div variants={item} className="mb-6">
             <h1 className="font-black text-[var(--text-primary)] leading-[1.05]">
               {settings?.heroName || 'Mangesh Pawar'}
             </h1>
@@ -101,19 +101,19 @@ export default function Hero() {
           </motion.div>
 
           {/* ── Tagline ── */}
-          <motion.div variants={item} className="mb-10">
-            <p className="text-base text-[var(--text-muted)] max-w-lg leading-relaxed">
+          <motion.div variants={item} className="mb-12">
+            <p className="text-base text-[var(--text-muted)] max-w-xl leading-relaxed">
               {settings?.heroTagline ||
                 'React · Node.js · .NET · Azure · LangChain. Currently at Cogitate, open to AI Engineer and Full Stack roles.'}
             </p>
           </motion.div>
 
           {/* ── CTAs — clear hierarchy: primary fills, secondary is ghost ── */}
-          <motion.div variants={item} className="flex flex-wrap items-center gap-3 mb-12">
+          <motion.div variants={item} className="flex flex-wrap items-center gap-4 mb-14">
             {/* Primary — filled, high contrast */}
             <a
               href="#projects"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl
                          text-sm font-semibold text-white bg-[var(--accent)]
                          hover:bg-[var(--accent-hover)] transition-colors duration-200
                          shadow-lg shadow-[var(--accent)]/20"
@@ -125,7 +125,7 @@ export default function Hero() {
             {/* Secondary — outlined, clearly lower priority */}
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl
                          text-sm font-semibold text-[var(--text-secondary)]
                          border border-[var(--border-hover)]
                          hover:text-[var(--text-primary)] hover:border-[var(--text-muted)]
@@ -157,7 +157,7 @@ export default function Hero() {
               </a>
             ))}
 
-            <span className="mx-2 h-4 w-px bg-[var(--border)]" />
+            <span className="mx-3 h-4 w-px bg-[var(--border)]" />
 
             <span className="text-xs text-[var(--text-muted)]">
               Based in India · Remote-friendly
@@ -172,7 +172,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.8, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2
+        className="absolute bottom-10 left-1/2 -translate-x-1/2
                    flex flex-col items-center gap-2"
         aria-hidden="true"
       >

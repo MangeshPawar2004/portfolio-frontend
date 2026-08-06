@@ -29,10 +29,11 @@ export default function Navbar() {
     <>
       <header
         className={cn(
+          // Always glassmorphic — never transparent
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          scrolled
-            ? 'border-b border-[var(--border)] bg-[var(--bg-base)]/90 backdrop-blur-md'
-            : 'bg-transparent'
+          'navbar-glass',
+          // On scroll: add stronger border + subtle shadow only
+          scrolled && 'navbar-glass-scrolled'
         )}
       >
         <nav className="container flex items-center justify-between h-16">

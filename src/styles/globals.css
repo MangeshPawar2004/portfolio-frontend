@@ -5,198 +5,6 @@
 ══════════════════════════════════════════════ */
 :root,
 [data-theme="dark"] {
-  --bg-base:       #0B0B0B;
-  --bg-card:       #111111;
-  --bg-subtle:     #161616;
-  --border:        #242424;
-  --border-hover:  #3a3a3a;
-  --accent:        #3B82F6;
-  --accent-hover:  #2563EB;
-  --accent-muted:  #1d3f6e;
-  --text-primary:  #F5F5F5;
-  --text-secondary:#A1A1AA;
-  --text-muted:    #71717A;
-  --success:       #10B981;
-  --error:         #EF4444;
-  --shadow:        0 4px 24px rgba(0,0,0,0.4);
-}
-
-/* ══════════════════════════════════════════════
-   LIGHT THEME
-══════════════════════════════════════════════ */
-[data-theme="light"] {
-  --bg-base:       #FAFAFA;
-  --bg-card:       #FFFFFF;
-  --bg-subtle:     #F4F4F5;
-  --border:        #E4E4E7;
-  --border-hover:  #D1D1D6;
-  --accent:        #2563EB;
-  --accent-hover:  #1D4ED8;
-  --accent-muted:  #DBEAFE;
-  --text-primary:  #09090B;
-  --text-secondary:#3F3F46;
-  --text-muted:    #71717A;
-  --success:       #059669;
-  --error:         #DC2626;
-  --shadow:        0 4px 24px rgba(0,0,0,0.08);
-}
-
-/* ══════════════════════════════════════════════
-   BASE RESET
-══════════════════════════════════════════════ */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  background-color: var(--bg-base);
-  color: var(--text-primary);
-  font-family: 'Inter', 'Geist', system-ui, -apple-system, sans-serif;
-  line-height: 1.6;
-  min-height: 100vh;
-  overflow-x: hidden;
-  /* Smooth theme transition */
-  transition: background-color 0.25s ease, color 0.25s ease;
-}
-
-/* ══════════════════════════════════════════════
-   TYPOGRAPHY
-══════════════════════════════════════════════ */
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1.2;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-}
-
-h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
-h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); }
-h3 { font-size: clamp(1.15rem, 2vw, 1.5rem); }
-
-p { color: var(--text-secondary); line-height: 1.75; }
-a { color: inherit; text-decoration: none; }
-
-/* ══════════════════════════════════════════════
-   SCROLLBAR
-══════════════════════════════════════════════ */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg-base); }
-::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-
-/* ══════════════════════════════════════════════
-   SELECTION
-══════════════════════════════════════════════ */
-::selection {
-  background: var(--accent-muted);
-  color: var(--text-primary);
-}
-
-/* ══════════════════════════════════════════════
-   LAYOUT
-══════════════════════════════════════════════ */
-#scroll-progress {
-  position: fixed;
-  top: 0; left: 0;
-  height: 2px;
-  background: var(--accent);
-  z-index: 9999;
-  transition: width 0.1s linear;
-}
-
-.section {
-  padding: clamp(4rem, 8vw, 7rem) 0;
-}
-
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
-}
-
-/* ══════════════════════════════════════════════
-   CARD
-══════════════════════════════════════════════ */
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
-}
-
-/* ══════════════════════════════════════════════
-   GRADIENT HELPERS
-══════════════════════════════════════════════ */
-.gradient-text {
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-muted) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.accent-gradient {
-  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ══════════════════════════════════════════════
-   FOCUS
-══════════════════════════════════════════════ */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-/* ══════════════════════════════════════════════
-   REDUCED MOTION
-══════════════════════════════════════════════ */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ══════════════════════════════════════════════
-   MOBILE TOUCH IMPROVEMENTS
-══════════════════════════════════════════════ */
-@media (max-width: 640px) {
-  /* Increase tap target sizes */
-  button, a, [role="button"] {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* Prevent zoom on input focus (iOS) */
-  input, textarea, select {
-    font-size: 16px !important;
-  }
-}/* src/styles/globals.css — FULL REPLACEMENT */
-@import "tailwindcss";
-
-/* ══════════════════════════════════════════════
-   DARK THEME (default)
-══════════════════════════════════════════════ */
-:root,
-[data-theme="dark"] {
   --bg-base:        #080808;
   --bg-card:        #0f0f0f;
   --bg-subtle:      #141414;
@@ -308,6 +116,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ══════════════════════════════════════════════
    LAYOUT — generous spacing
+   Container: 1440px max, ~75–80% of wide viewports
 ══════════════════════════════════════════════ */
 
 /* Scroll progress bar */
@@ -320,21 +129,55 @@ a { color: inherit; text-decoration: none; }
   transition: width 0.1s linear;
 }
 
-/* Sections — more breathing room */
+/*
+  Section vertical spacing:
+  - Mobile:  7rem  (112px)
+  - Fluid:   10vw
+  - Desktop: 9rem  (144px)
+*/
 .section {
-  padding: clamp(5rem, 10vw, 9rem) 0;
+  padding: clamp(7rem, 10vw, 9rem) 0;
 }
 
-/* Container — slightly narrower = more whitespace on sides */
+/*
+  Container:
+  - Max width: 1440px (fills ~75–80% of wide screens)
+  - Horizontal padding: 24px → 40px → 64px
+*/
 .container {
   width: 100%;
-  max-width: 1024px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 clamp(1.5rem, 5vw, 3rem);
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+}
+
+/* ══════════════════════════════════════════════
+   NAVBAR — always glassmorphic
+   Scroll state adds shadow only; never opacity change
+══════════════════════════════════════════════ */
+.navbar-glass {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(8, 8, 8, 0.85);
+  border-bottom: 1px solid var(--border);
+}
+
+[data-theme="light"] .navbar-glass {
+  background: rgba(248, 248, 248, 0.88);
+}
+
+.navbar-glass-scrolled {
+  border-bottom-color: var(--border-hover);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+}
+
+[data-theme="light"] .navbar-glass-scrolled {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
 }
 
 /* ══════════════════════════════════════════════
    CARD — unified style
+   All cards share: radius, padding guidance, border, hover
 ══════════════════════════════════════════════ */
 .card {
   background: var(--bg-card);
@@ -350,14 +193,6 @@ a { color: inherit; text-decoration: none; }
   border-color: var(--border-hover);
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
-}
-
-/* ══════════════════════════════════════════════
-   DIVIDER between sections
-══════════════════════════════════════════════ */
-.section-divider {
-  border: none;
-  border-top: 1px solid var(--border);
 }
 
 /* ══════════════════════════════════════════════
@@ -407,6 +242,11 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 640px) {
   button, a, [role="button"] { min-height: 44px; }
   input, textarea, select { font-size: 16px !important; }
+
+  /* Tighter section spacing on mobile */
+  .section {
+    padding: 5rem 0;
+  }
 }
 
 /* ══════════════════════════════════════════════
