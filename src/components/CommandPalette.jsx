@@ -124,8 +124,8 @@ export default function CommandPalette() {
             subtitle: `${s.category} · ${s.proficiency ? s.proficiency + '%' : 'skill'}`,
             type: 'skill',
             emoji: '🛠️',
-            action: 'scroll',
-            href: '#skills',
+            action: 'navigate',
+            href: '/skills',
         })),
         ...posts.map((p) => ({
             id: `blog-${p._id}`,

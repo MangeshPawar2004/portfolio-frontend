@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, ExternalLink, Mail, MapPin } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowRight, Mail } from 'lucide-react'
 import { useSettings } from '@/hooks/useSettings'
 import { SOCIAL_LINKS } from '@/constants'
 
@@ -21,48 +22,27 @@ function LinkedInIcon({ size = 18 }) {
   )
 }
 
-/* ── Decorative star SVG ── */
-function OrangeStar({ size = 24, className = '' }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      className={className}
-      aria-hidden="true"
-    >
-      <path
-        d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z"
-        fill="currentColor"
-      />
-    </svg>
-  )
-}
-
 /* ── Marquee ticker strip ── */
 const TICKER_ITEMS = [
+  'SYSTEMS',
+  'LANGCHAIN & FAISS',
+  'CLOUD ARCHITECTURE',
   'FULL STACK DEVELOPMENT',
   'AI ENGINEERING',
   'REACT & NODE.JS',
   '.NET & AZURE',
-  'BLOCKCHAIN',
-  'PRODUCTION SYSTEMS',
-  'LANGCHAIN & FAISS',
-  'CLOUD ARCHITECTURE',
 ]
 
 function MarqueeTicker() {
   return (
-    <div className="w-full overflow-hidden border-t-2 border-b-2 border-[var(--text-primary)]
-                    bg-[var(--text-primary)] py-3 -rotate-1 scale-[1.02]">
-      <div className="marquee-track">
-        {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+    <div className="w-full overflow-hidden bg-[#1A1A1A] py-3.5 border-t border-[#2A2A2A]">
+      <div className="marquee-track flex items-center">
+        {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
           <span key={i} className="flex items-center gap-4 px-4 whitespace-nowrap">
-            <span className="text-sm font-bold tracking-[0.1em] text-[var(--bg-base)]">
+            <span className="text-xs md:text-sm font-bold tracking-[0.15em] text-white uppercase">
               {item}
             </span>
-            <OrangeStar size={14} className="text-[var(--accent)]" />
+            <span className="text-[var(--accent)] font-extrabold text-sm md:text-base">+</span>
           </span>
         ))}
       </div>
@@ -83,171 +63,175 @@ const item = {
 
 export default function Hero() {
   const { data: settings } = useSettings()
+  const techStack = ['REACT', 'NODE.JS', '.NET', 'AZURE', 'LANGCHAIN']
 
   return (
-    <section className="relative min-h-[100vh] flex flex-col overflow-hidden">
+    <section className="relative min-h-[100vh] flex flex-col justify-between overflow-hidden bg-[var(--bg-base)]">
 
-      {/* ── Decorative corner shapes ── */}
-      <div className="absolute top-20 right-8 md:right-16 lg:right-24" aria-hidden="true">
-        <div className="w-24 h-24 md:w-40 md:h-40 border-4 border-[var(--accent)]
-                        rotate-12 transition-transform" />
-        <div className="w-16 h-16 md:w-28 md:h-28 bg-[var(--accent)]
-                        -mt-8 ml-12 md:-mt-12 md:ml-20" />
+      {/* Font loading for Playfair Display serif title */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&display=swap"
+        rel="stylesheet"
+      />
+
+      {/* ── Decorative corner geometric shapes (matching reference image) ── */}
+      <div
+        className="hidden md:block absolute top-28 right-8 lg:top-32 lg:right-16 xl:right-28 pointer-events-none z-0"
+        aria-hidden="true"
+      >
+        {/* Tilted outline square */}
+        <div className="w-48 h-48 lg:w-72 lg:h-72 border-[4px] lg:border-[5px] border-[var(--accent)] -rotate-12 bg-transparent" />
+        {/* Solid filled orange square below/overlapping */}
+        <div className="w-40 h-40 lg:w-60 lg:h-60 bg-[var(--accent)] -mt-20 lg:-mt-28 ml-2 lg:ml-4" />
       </div>
 
-      {/* ── Main content ── */}
-      <div className="container relative z-10 flex-1 flex items-center py-32 lg:py-40">
+      {/* ── Main Hero Content ── */}
+      <div className="container relative z-10 flex-1 flex items-center pt-28 pb-16 lg:pt-36 lg:pb-20">
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="max-w-4xl"
+          className="max-w-5xl lg:max-w-6xl"
         >
 
           {/* Availability pill */}
-          <motion.div variants={item} className="mb-8">
-            {settings?.availableForWork ? (
-              <span className="inline-flex items-center gap-2.5 px-4 py-2 border-2 border-[var(--success)]
-                               text-xs font-bold tracking-[0.08em] uppercase
-                               text-[var(--success)] bg-[var(--success-muted)]">
-                <span className="relative flex h-2 w-2">
-                  <span className="pulse-ring absolute inline-flex h-full w-full
-                                   bg-[var(--success)]" style={{ borderRadius: '50%' }} />
-                  <span className="relative inline-flex h-2 w-2 bg-[var(--success)]"
-                        style={{ borderRadius: '50%' }} />
-                </span>
-                {settings.availabilityNote || 'Open to new opportunities'}
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-2 px-4 py-2 border-2 border-[var(--border)]
-                               text-xs font-bold tracking-[0.08em] uppercase text-[var(--text-muted)]">
-                <MapPin size={12} />
-                Navi Mumbai, India
-              </span>
-            )}
+          <motion.div variants={item} className="mb-6">
+            <span className="inline-flex items-center gap-2.5 px-5 py-2.5 md:px-6 md:py-3 border border-[var(--accent)]
+                             text-xs md:text-sm font-bold tracking-wider uppercase
+                             text-[var(--accent)] bg-transparent">
+              <span className="inline-block w-2.5 h-2.5 rounded-full bg-[var(--accent)]" />
+              {settings?.availableForWork
+                ? (settings.availabilityNote || 'OPEN TO AI ENGINEER AND FULL STACK DEVELOPER ROLES')
+                : 'OPEN TO AI ENGINEER AND FULL STACK DEVELOPER ROLES'}
+            </span>
           </motion.div>
 
-          {/* Intro line */}
+          {/* Greeting text */}
           <motion.div variants={item} className="mb-3">
-            <p className="text-base md:text-lg font-semibold text-[var(--text-secondary)]
-                          tracking-wide uppercase flex items-center gap-3">
+            <p className="text-sm md:text-base font-extrabold tracking-widest text-[var(--text-primary)] uppercase">
               HI, I'M {(settings?.heroName || 'MANGESH').split(' ')[0].toUpperCase()}.
             </p>
           </motion.div>
 
-          {/* Big headline */}
+          {/* Bold Serif Headline */}
           <motion.div variants={item} className="mb-6">
-            <h1 className="text-[var(--text-primary)] leading-[0.95] uppercase">
-              A FULL STACK
+            <h1
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tight uppercase"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              <span className="text-[var(--text-primary)]">A FULL STACK</span>
               <br />
-              <span className="inline-flex items-center gap-3 md:gap-5">
-                DEVELOPER
-                <OrangeStar size={36} className="text-[var(--accent)] spin-slow
-                                                 hidden sm:inline-block" />
-              </span>
+              <span className="text-[var(--text-primary)]">DEVELOPER </span>
+              <span className="text-[var(--accent)]">& AI</span>
               <br />
-              <span className="text-[var(--accent)]">& AI ENGINEER</span>
+              <span className="text-[var(--accent)]">ENGINEER</span>
             </h1>
           </motion.div>
 
-          {/* Skills strip */}
-          <motion.div variants={item} className="mb-10">
-            <div className="flex items-center gap-3 flex-wrap">
-              {['REACT', 'NODE.JS', '.NET', 'AZURE', 'LANGCHAIN'].map((tech, i) => (
-                <span key={tech} className="flex items-center gap-3">
-                  <span className="text-sm md:text-base font-bold tracking-[0.08em]
-                                   text-[var(--text-primary)]">
+          {/* Tech stack line with orange '+' separators */}
+          <motion.div variants={item} className="mb-8">
+            <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+              {techStack.map((tech, i) => (
+                <span key={tech} className="flex items-center gap-2 md:gap-3">
+                  <span className="text-xs md:text-sm font-bold tracking-widest text-[var(--text-primary)] uppercase">
                     {tech}
                   </span>
-                  {i < 4 && (
-                    <OrangeStar size={10} className="text-[var(--accent)]" />
+                  {i < techStack.length - 1 && (
+                    <span className="text-[var(--accent)] font-extrabold text-xs md:text-sm">+</span>
                   )}
                 </span>
               ))}
             </div>
           </motion.div>
 
-          {/* CTA buttons — boxy */}
-          <motion.div variants={item} className="flex flex-wrap items-center gap-4 mb-14">
-            {/* Primary — filled orange */}
-            <a
-              href="#projects"
-              className="inline-flex items-center gap-2.5 px-8 py-4
-                         text-sm font-bold tracking-wider uppercase
+          {/* CTA Buttons */}
+          <motion.div variants={item} className="flex flex-wrap items-center gap-5 mb-10">
+            {/* Primary CTA: Filled Orange */}
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-2.5 px-9 py-4 md:px-10 md:py-4.5
+                         text-xs md:text-sm font-extrabold tracking-wider uppercase
                          text-white bg-[var(--accent)]
-                         hover:bg-[var(--accent-hover)] transition-colors duration-200
-                         border-2 border-[var(--accent)]"
+                         hover:bg-[var(--accent-hover)] transition-colors duration-200"
             >
               View Projects
-              <ArrowRight size={16} strokeWidth={2.5} />
-            </a>
+              <ArrowRight size={18} strokeWidth={2.5} />
+            </Link>
 
-            {/* Secondary — outlined, boxy */}
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2.5 px-8 py-4
-                         text-sm font-bold tracking-wider uppercase
+            {/* Secondary CTA: Black Outline */}
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2.5 px-9 py-4 md:px-10 md:py-4.5
+                         text-xs md:text-sm font-extrabold tracking-wider uppercase
                          text-[var(--text-primary)] bg-transparent
                          border-2 border-[var(--text-primary)]
-                         hover:bg-[var(--text-primary)] hover:text-[var(--bg-base)]
+                         hover:bg-[var(--text-primary)] hover:text-white
                          transition-all duration-200"
             >
               Let's Talk
-            </a>
+            </Link>
           </motion.div>
 
-          {/* Social links */}
-          <motion.div variants={item} className="flex items-center gap-1">
-            {[
-              { href: SOCIAL_LINKS.github, icon: GitHubIcon, label: 'GitHub' },
-              { href: SOCIAL_LINKS.linkedin, icon: LinkedInIcon, label: 'LinkedIn' },
-              { href: SOCIAL_LINKS.email, icon: Mail, label: 'Email' },
-            ].map(({ href, icon: Icon, label }) => (
+          {/* Social Links & Location Info */}
+          <motion.div variants={item} className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
               <a
-                key={label}
-                href={href}
-                target={href.startsWith('http') ? '_blank' : undefined}
-                rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                aria-label={label}
-                className="p-3 text-[var(--text-muted)]
-                           hover:text-[var(--accent)] hover:bg-[var(--accent-light)]
-                           transition-all duration-200 border-2 border-transparent
-                           hover:border-[var(--accent)]"
+                href={SOCIAL_LINKS.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                className="p-1.5 text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
               >
-                <Icon size={18} strokeWidth={2} />
+                <GitHubIcon size={18} />
               </a>
-            ))}
+              <a
+                href={SOCIAL_LINKS.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="p-1.5 text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+              >
+                <LinkedInIcon size={18} />
+              </a>
+              <a
+                href={SOCIAL_LINKS.email}
+                aria-label="Email"
+                className="p-1.5 text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+              >
+                <Mail size={18} />
+              </a>
+            </div>
 
-            <span className="mx-4 h-5 w-[2px] bg-[var(--border)]" />
+            <span className="text-gray-400 font-light mx-1">|</span>
 
-            <span className="text-xs font-semibold tracking-wider uppercase text-[var(--text-muted)]">
-              Based in India · Remote-friendly
+            <span className="text-xs font-bold tracking-widest uppercase text-[var(--text-primary)]">
+              BASED IN INDIA · REMOTE-FRIENDLY
             </span>
           </motion.div>
 
         </motion.div>
       </div>
 
-      {/* ── Marquee ticker strip — sits at bottom of hero ── */}
-      <MarqueeTicker />
-
-      {/* ── Scroll indicator ── */}
+      {/* ── Scroll indicator mouse ── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.5 }}
-        className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        transition={{ delay: 1, duration: 0.5 }}
+        className="self-center my-4 flex flex-col items-center gap-1 z-10"
         aria-hidden="true"
       >
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-5 h-8 border-2 border-[var(--text-primary)]
-                     flex items-start justify-center pt-1.5"
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          className="w-4 h-7 border-2 border-[var(--text-primary)] flex items-start justify-center pt-1"
         >
-          <div className="w-1 h-2 bg-[var(--text-primary)]" />
+          <div className="w-1 h-1.5 bg-[var(--text-primary)]" />
         </motion.div>
       </motion.div>
+
+      {/* ── Marquee Ticker Strip at bottom ── */}
+      <MarqueeTicker />
+
     </section>
   )
 }

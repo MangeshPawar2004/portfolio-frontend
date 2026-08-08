@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Mail, FileText } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSettings } from '@/hooks/useSettings'
-import { SOCIAL_LINKS } from '@/constants'
+import { NAV_LINKS, SOCIAL_LINKS } from '@/constants'
 
 function GitHubIcon({ size = 14 }) {
   return (
@@ -20,18 +20,9 @@ function LinkedInIcon({ size = 14 }) {
   )
 }
 
-const MOBILE_NAV_LINKS = [
-  { label: 'About',      href: '#about' },
-  { label: 'Projects',   href: '#projects' },
-  { label: 'Skills',     href: '#skills' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Contact',    href: '#contact' },
-]
-
 export default function MobileNav({ isOpen, onClose }) {
   const { data: settings } = useSettings()
   const location = useLocation()
-  const isHome = location.pathname === '/'
 
   return (
     <AnimatePresence>
@@ -78,40 +69,30 @@ export default function MobileNav({ isOpen, onClose }) {
             {/* Nav links */}
             <nav className="flex-1 overflow-y-auto p-5">
               <ul className="space-y-1">
-                {MOBILE_NAV_LINKS.map(({ label, href }, i) => (
-                  <motion.li
-                    key={href}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 + 0.1 }}
-                  >
-                    {isHome ? (
-                      <a
-                        href={href}
-                        onClick={onClose}
-                        className="flex items-center w-full px-3 py-3 text-sm
-                                   font-bold text-[var(--text-secondary)]
-                                   tracking-wider uppercase
-                                   hover:text-[var(--accent)] hover:bg-[var(--accent-light)]
-                                   transition-colors"
-                      >
-                        {label}
-                      </a>
-                    ) : (
+                {NAV_LINKS.map(({ label, href }, i) => {
+                  const isActive = location.pathname === href
+                  return (
+                    <motion.li
+                      key={href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 + 0.1 }}
+                    >
                       <Link
-                        to={`/${href}`}
+                        to={href}
                         onClick={onClose}
-                        className="flex items-center w-full px-3 py-3 text-sm
-                                   font-bold text-[var(--text-secondary)]
-                                   tracking-wider uppercase
-                                   hover:text-[var(--accent)] hover:bg-[var(--accent-light)]
-                                   transition-colors"
+                        className={`flex items-center w-full px-3 py-3 text-sm
+                                   font-bold tracking-wider uppercase transition-colors ${
+                                     isActive
+                                       ? 'text-[var(--accent)] bg-[var(--accent-light)]'
+                                       : 'text-[var(--text-secondary)] hover:text-[var(--accent)] hover:bg-[var(--accent-light)]'
+                                   }`}
                       >
                         {label}
                       </Link>
-                    )}
-                  </motion.li>
-                ))}
+                    </motion.li>
+                  )
+                })}
               </ul>
 
               {/* Resume CTA */}

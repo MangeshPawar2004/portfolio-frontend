@@ -44,12 +44,11 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-200',
-          'navbar-glass',
-          scrolled && 'navbar-glass-scrolled'
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-200 bg-[var(--bg-base)]/90 backdrop-blur-md border-b border-[var(--border)]',
+          scrolled && 'shadow-sm bg-[var(--bg-base)]/98'
         )}
       >
-        <nav className="container flex items-center justify-between h-16">
+        <nav className="container max-w-[1280px] mx-auto px-6 md:px-12 flex items-center justify-between h-20">
 
           {/* Logo — bold, boxy */}
           <Link
@@ -63,34 +62,31 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav links */}
-          <div className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map((link) =>
-              isHome ? (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="px-3 py-2 text-sm font-semibold text-[var(--text-secondary)]
-                             hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]
-                             transition-all duration-200 tracking-wide uppercase"
-                >
-                  {link.label}
-                </a>
-              ) : (
+          <div className="hidden md:flex items-center gap-6 lg:gap-8 xl:gap-10">
+            {NAV_LINKS.map((link) => {
+              const isActive = location.pathname === link.href || (link.href !== '/' && location.pathname.startsWith(link.href))
+              return (
                 <Link
                   key={link.href}
-                  to={`/${link.href}`}
-                  className="px-3 py-2 text-sm font-semibold text-[var(--text-secondary)]
-                             hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]
-                             transition-all duration-200 tracking-wide uppercase"
+                  to={link.href}
+                  className={cn(
+                    "px-2 py-1.5 text-xs lg:text-sm font-bold transition-all duration-200 tracking-[0.12em] uppercase relative",
+                    isActive
+                      ? "text-[var(--accent)] font-extrabold"
+                      : "text-[var(--text-primary)] hover:text-[var(--accent)]"
+                  )}
                 >
                   {link.label}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[var(--accent)]" />
+                  )}
                 </Link>
               )
-            )}
+            })}
           </div>
 
           {/* Right actions */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-3 lg:gap-4">
             {/* GitHub */}
             <a
               href={SOCIAL_LINKS.github}
@@ -121,11 +117,11 @@ export default function Navbar() {
                 href={settings.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-1 flex items-center gap-1.5 px-3 py-1.5 text-sm
-                           font-semibold border-2 border-[var(--border)]
+                className="flex items-center gap-1.5 px-4 py-2 text-xs lg:text-sm
+                           font-bold border-2 border-[var(--border)]
                            text-[var(--text-secondary)]
                            hover:text-[var(--text-primary)] hover:border-[var(--text-primary)]
-                           transition-all tracking-wide uppercase"
+                           transition-all tracking-wider uppercase"
               >
                 <FileText size={13} />
                 Resume
@@ -135,7 +131,7 @@ export default function Navbar() {
             {/* CTA — orange boxy */}
             <a
               href={isHome ? '#contact' : '/#contact'}
-              className="ml-1 px-5 py-1.5 text-sm font-bold tracking-wider uppercase
+              className="px-6 py-2.5 text-xs lg:text-sm font-bold tracking-widest uppercase
                          bg-[var(--accent)] text-white border-2 border-[var(--accent)]
                          hover:bg-[var(--accent-hover)] hover:border-[var(--accent-hover)]
                          transition-colors"

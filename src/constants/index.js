@@ -1,10 +1,10 @@
 export const NAV_LINKS = [
-  { label: 'About',      href: '#about' },
-  { label: 'Projects',   href: '#projects' },
-  { label: 'Skills',     href: '#skills' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Blog',       href: '#blog' },
-  { label: 'Contact',    href: '#contact' },
+  { label: 'About',      href: '/about' },
+  { label: 'Projects',   href: '/projects' },
+  { label: 'Skills',     href: '/skills' },
+  { label: 'Experience', href: '/experience' },
+  { label: 'Blog',       href: '/blog' },
+  { label: 'Contact',    href: '/contact' },
 ]
 
 export const SOCIAL_LINKS = {
@@ -47,12 +47,12 @@ export const AI_TECH_NAMES = [
 // Command palette static navigation commands
 export const PALETTE_NAV_COMMANDS = [
   { id: 'home',       label: 'Go to Home',       icon: '🏠', action: 'navigate', href: '/' },
-  { id: 'about',      label: 'Scroll to About',  icon: '👤', action: 'scroll',   href: '#about' },
-  { id: 'projects',   label: 'Scroll to Projects', icon: '🗂️', action: 'scroll', href: '#projects' },
-  { id: 'skills',     label: 'Scroll to Skills', icon: '🛠️', action: 'scroll',   href: '#skills' },
-  { id: 'experience', label: 'Scroll to Experience', icon: '💼', action: 'scroll', href: '#experience' },
-  { id: 'blog',       label: 'Scroll to Blog',   icon: '📝', action: 'scroll',   href: '#blog' },
-  { id: 'contact',    label: 'Scroll to Contact', icon: '✉️', action: 'scroll',   href: '#contact' },
+  { id: 'about',      label: 'Go to About',      icon: '👤', action: 'navigate', href: '/about' },
+  { id: 'projects',   label: 'Go to Projects',   icon: '🗂️', action: 'navigate', href: '/projects' },
+  { id: 'skills',     label: 'Go to Skills',     icon: '🛠️', action: 'navigate', href: '/skills' },
+  { id: 'experience', label: 'Go to Experience', icon: '💼', action: 'navigate', href: '/experience' },
+  { id: 'blog',       label: 'Go to Blog',       icon: '📝', action: 'navigate', href: '/blog' },
+  { id: 'contact',    label: 'Go to Contact',    icon: '✉️', action: 'navigate', href: '/contact' },
 ]
 
 export const PALETTE_LINK_COMMANDS = [
