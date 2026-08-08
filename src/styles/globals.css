@@ -1,259 +1,803 @@
-/* ── Custom font import ── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-@import "tailwindcss";
+/* ============================================================
+   PORTFOLIO DESIGN SYSTEM
+   Editorial / Minimal / Modern
+   Inspired by the CREATIVE.DIR visual direction
+   ============================================================ */
 
-/* ══════════════════════════════════════════════
-   BOXY PORTFOLIO — OFF-WHITE + ORANGE THEME
-   Inspired by Moxa / Brutalist-modern portfolios
-══════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Hanken+Grotesk:wght@400;500;700&display=swap');
+
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
 
 :root {
-  /* ── Backgrounds ── */
-  --bg-base:        #F5F0EB;
-  --bg-card:        #FFFFFF;
-  --bg-subtle:      #EDE8E3;
-  --bg-hover:       #E5DFD9;
-  --bg-dark:        #1A1A1A;
+  /* ----------------------------------------------------------
+     Backgrounds
+     ---------------------------------------------------------- */
 
-  /* ── Borders ── */
-  --border:         #D4CEC8;
-  --border-hover:   #B8B2AB;
-  --border-dark:    #2A2A2A;
+  --bg-base: #fbf9f9;
+  --bg-card: #ffffff;
+  --bg-subtle: #f5f3f3;
+  --bg-hover: #efeded;
+  --bg-dark: #1b1c1c;
 
-  /* ── Accent — bold orange ── */
-  --accent:         #E8530E;
-  --accent-hover:   #D04A0C;
-  --accent-light:   #FFF0E8;
-  --accent-muted:   #FDDCCC;
-  --accent-glow:    rgba(232, 83, 14, 0.08);
+  /* ----------------------------------------------------------
+     Borders
+     ---------------------------------------------------------- */
 
-  /* ── Text ── */
-  --text-primary:   #1A1A1A;
-  --text-secondary: #4A4A4A;
-  --text-muted:     #8A8A8A;
-  --text-inverse:   #FFFFFF;
+  --border: #e4beb4;
+  --border-hover: #907067;
+  --border-dark: #2a2a26;
 
-  /* ── Status colors ── */
-  --success:        #1A8D5F;
-  --success-muted:  #E6F5EE;
-  --error:          #DC3545;
-  --warning:        #E8A30E;
+  /* ----------------------------------------------------------
+     Accent
+     ---------------------------------------------------------- */
 
-  /* ── Shadows ── */
-  --shadow-sm:      0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md:      0 4px 16px rgba(0,0,0,0.08);
-  --shadow-lg:      0 8px 32px rgba(0,0,0,0.1);
-  --shadow-card:    0 2px 8px rgba(0,0,0,0.04);
+  --accent: #ff5722;
+  --accent-hover: #b02f00;
+  --accent-light: #ffdbd1;
+  --accent-muted: #fddccc;
+  --accent-glow: rgba(255, 87, 34, 0.08);
 
-  /* ── Radii — BOXY = sharp or minimal ── */
-  --radius-sm:      2px;
-  --radius-md:      4px;
-  --radius-lg:      6px;
-  --radius-xl:      8px;
+  /* ----------------------------------------------------------
+     Text
+     ---------------------------------------------------------- */
+
+  --text-primary: #1b1c1c;
+  --text-secondary: #5b4039;
+  --text-muted: #5f5e59;
+  --text-inverse: #ffffff;
+
+  /* ----------------------------------------------------------
+     Status
+     ---------------------------------------------------------- */
+
+  --success: #1a8d5f;
+  --success-muted: #e6f5ee;
+
+  --error: #ba1a1a;
+
+  --warning: #e8a30e;
+
+  /* ----------------------------------------------------------
+     Shadows
+     ---------------------------------------------------------- */
+
+  --shadow-sm:
+    0 1px 3px rgba(27, 28, 28, 0.04);
+
+  --shadow-md:
+    0 4px 16px rgba(27, 28, 28, 0.06);
+
+  --shadow-lg:
+    0 8px 32px rgba(27, 28, 28, 0.08);
+
+  --shadow-card:
+    0 2px 8px rgba(27, 28, 28, 0.03);
+
+  /* ----------------------------------------------------------
+     Border Radius
+     ---------------------------------------------------------- */
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+
+  /* ----------------------------------------------------------
+     Layout
+     ---------------------------------------------------------- */
+
+  --container-max: 1600px;
+
+  /* ----------------------------------------------------------
+     Spacing Scale
+     ---------------------------------------------------------- */
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+
+  /* ----------------------------------------------------------
+     Navigation
+     ---------------------------------------------------------- */
+
+  --navbar-height: 80px;
 }
 
-/* ══════════════════════════════════════════════
+
+/* ============================================================
    RESET
-══════════════════════════════════════════════ */
-*, *::before, *::after {
+   ============================================================ */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+
+/* ============================================================
+   DOCUMENT
+   ============================================================ */
+
 html {
   scroll-behavior: smooth;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
   text-rendering: optimizeLegibility;
+
+  scroll-padding-top: var(--navbar-height);
 }
+
 
 body {
   background-color: var(--bg-base);
   color: var(--text-primary);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+
+  font-family:
+    'Hanken Grotesk',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.5;
+
   min-height: 100vh;
+
   overflow-x: hidden;
 }
 
-/* ══════════════════════════════════════════════
-   TYPOGRAPHY — Space Grotesk for headings
-══════════════════════════════════════════════ */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  line-height: 1.1;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+
+/* Display / editorial typography */
+
+h1,
+h2,
+h3 {
+  font-family:
+    'DM Serif Display',
+    Georgia,
+    serif;
+
   color: var(--text-primary);
+
+  font-weight: 400;
+
+  line-height: 1.1;
+
+  letter-spacing: -0.02em;
 }
 
-/* Hero name — massive */
-h1 { font-size: clamp(3.5rem, 8vw, 7rem); font-weight: 900; }
 
-/* Section titles — bold, clear */
-h2 { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 800; }
+/* Supporting / UI typography */
 
-/* Card/item titles */
-h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 700; }
+h4,
+h5,
+h6 {
+  font-family:
+    'Hanken Grotesk',
+    system-ui,
+    sans-serif;
 
-h4 { font-size: 1rem; font-weight: 600; }
+  color: var(--text-primary);
+
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+
+/* ------------------------------------------------------------
+   Heading scale
+   ------------------------------------------------------------ */
+
+h1 {
+  font-size: clamp(3rem,
+      6vw,
+      5rem);
+}
+
+h2 {
+  font-size: clamp(2.5rem,
+      5vw,
+      4rem);
+}
+
+h3 {
+  font-size: clamp(1.75rem,
+      3vw,
+      2rem);
+}
+
+h4 {
+  font-size: 1.125rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.875rem;
+}
+
+
+/* ------------------------------------------------------------
+   Paragraphs
+   ------------------------------------------------------------ */
 
 p {
   color: var(--text-secondary);
-  line-height: 1.7;
+
+  font-family:
+    'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+
+  line-height: 1.75;
 }
 
-a { color: inherit; text-decoration: none; }
 
-/* ══════════════════════════════════════════════
-   LAYOUT
-══════════════════════════════════════════════ */
+/* ------------------------------------------------------------
+   Body typography utilities
+   ------------------------------------------------------------ */
 
-/* Scroll progress bar — orange */
+.body-lg {
+  font-family:
+    'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+
+  font-size: 18px;
+  line-height: 28px;
+
+  font-weight: 400;
+}
+
+
+.body-md {
+  font-family:
+    'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+
+  font-size: 16px;
+  line-height: 24px;
+
+  font-weight: 400;
+}
+
+
+/* ------------------------------------------------------------
+   Editorial labels
+   ------------------------------------------------------------ */
+
+.label-caps {
+  font-family:
+    'Hanken Grotesk',
+    system-ui,
+    sans-serif;
+
+  font-size: 12px;
+  line-height: 16px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+}
+
+
+/* ------------------------------------------------------------
+   Links
+   ------------------------------------------------------------ */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* ============================================================
+   LAYOUT SYSTEM
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Section
+   ------------------------------------------------------------ */
+
+.section {
+  width: 100%;
+
+  padding-block:
+    clamp(6rem,
+      8vw,
+      9rem);
+}
+
+
+/* ------------------------------------------------------------
+   Container
+   ------------------------------------------------------------ */
+
+.container {
+  width: 100%;
+
+  max-width: var(--container-max);
+
+  margin-inline: auto;
+
+  padding-inline:
+    clamp(1.5rem,
+      4vw,
+      4rem);
+}
+
+
+/* ------------------------------------------------------------
+   Narrow content container
+   ------------------------------------------------------------ */
+
+.container-narrow {
+  width: 100%;
+
+  max-width: 960px;
+
+  margin-inline: auto;
+
+  padding-inline:
+    clamp(1.5rem,
+      4vw,
+      4rem);
+}
+
+
+/* ------------------------------------------------------------
+   Reading width
+   ------------------------------------------------------------ */
+
+.prose-width {
+  max-width: 720px;
+}
+
+
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
+
 #scroll-progress {
   position: fixed;
-  top: 0; left: 0;
+
+  top: 0;
+  left: 0;
+
+  width: 0;
+
   height: 3px;
+
   background: var(--accent);
+
   z-index: 9999;
+
   transition: width 0.1s linear;
 }
 
-/* Section spacing */
-.section {
-  padding: clamp(6rem, 10vw, 9rem) 0;
-}
 
-/* Container */
-.container {
-  width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 clamp(1rem, 2.5vw, 2.5rem);
-}
+/* ============================================================
+   NAVBAR
+   ============================================================ */
 
-/* ══════════════════════════════════════════════
-   NAVBAR — solid, not glassmorphic
-══════════════════════════════════════════════ */
+/*
+  The navbar should ALWAYS remain glass.
+
+  Scrolling should NOT change its opacity.
+
+  Only shadow/border strength can change.
+*/
+
 .navbar-glass {
-  background: var(--bg-base);
-  border-bottom: 2px solid var(--text-primary);
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  width: 100%;
+
+  height: var(--navbar-height);
+
+  z-index: 50;
+
+  background:
+    rgba(251, 249, 249, 0.78);
+
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+  border-bottom:
+    1px solid rgba(228, 190, 180, 0.35);
+
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
+
+
+/*
+  Scrolled state.
+
+  IMPORTANT:
+  No opacity change.
+*/
 
 .navbar-glass-scrolled {
-  box-shadow: var(--shadow-md);
+  background:
+    rgba(251, 249, 249, 0.82);
+
+  border-bottom-color:
+    rgba(228, 190, 180, 0.5);
+
+  box-shadow:
+    0 4px 20px rgba(27, 28, 28, 0.06);
 }
 
-/* ══════════════════════════════════════════════
-   CARD — boxy, sharp, minimal radius
-══════════════════════════════════════════════ */
+
+/* ============================================================
+   CARD SYSTEM
+   ============================================================ */
+
 .card {
   background: var(--bg-card);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-md);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    var(--radius-md);
+
   transition:
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
 }
+
 
 .card:hover {
-  border-color: var(--text-primary);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+  border-color:
+    var(--border-hover);
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    var(--shadow-md);
 }
 
-/* ══════════════════════════════════════════════
-   GRADIENT / ACCENT HELPERS
-══════════════════════════════════════════════ */
+
+/* ------------------------------------------------------------
+   Flat card
+   ------------------------------------------------------------ */
+
+.card-flat {
+  background: var(--bg-card);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    var(--radius-md);
+}
+
+
+/* ------------------------------------------------------------
+   Subtle card
+   ------------------------------------------------------------ */
+
+.card-subtle {
+  background: var(--bg-subtle);
+
+  border:
+    1px solid rgba(228, 190, 180, 0.3);
+}
+
+
+/* ============================================================
+   BUTTON / INTERACTION HELPERS
+   ============================================================ */
+
+.interactive {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.interactive:hover {
+  transform:
+    translateY(-1px);
+}
+
+
+/* ============================================================
+   ACCENT HELPERS
+   ============================================================ */
+
+.accent-text {
+  color: var(--accent);
+}
+
+
+.accent-bg {
+  background-color: var(--accent);
+}
+
+
+.accent-border {
+  border-color: var(--accent);
+}
+
+
+/* ============================================================
+   GRADIENT HELPERS
+   ============================================================ */
+
+/*
+  Kept for compatibility with existing components.
+  Use sparingly — the new design direction relies primarily
+  on typography, spacing, borders, and the orange accent.
+*/
+
 .gradient-text {
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-muted) 100%);
+  background:
+    linear-gradient(135deg,
+      var(--text-primary) 0%,
+      var(--text-muted) 100%);
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
   background-clip: text;
 }
+
 
 .accent-gradient {
-  background: linear-gradient(135deg, var(--accent) 0%, #FF7A33 100%);
+  background:
+    linear-gradient(135deg,
+      var(--accent) 0%,
+      #ff7a33 100%);
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
   background-clip: text;
 }
 
-/* ══════════════════════════════════════════════
-   SCROLLBAR
-══════════════════════════════════════════════ */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg-subtle); }
-::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 0; }
 
-/* ══════════════════════════════════════════════
-   SELECTION — orange
-══════════════════════════════════════════════ */
-::selection {
-  background: var(--accent);
-  color: var(--text-inverse);
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 4px;
 }
 
-/* ══════════════════════════════════════════════
-   FOCUS
-══════════════════════════════════════════════ */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+
+::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+
   border-radius: 0;
 }
 
-/* ══════════════════════════════════════════════
-   MARQUEE TICKER
-══════════════════════════════════════════════ */
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
+
+
+/* Firefox */
+
+html {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    var(--border-hover) var(--bg-subtle);
+}
+
+
+/* ============================================================
+   TEXT SELECTION
+   ============================================================ */
+
+::selection {
+  background: var(--accent);
+
+  color: var(--text-inverse);
+}
+
+
+/* ============================================================
+   FOCUS
+   ============================================================ */
+
+:focus-visible {
+  outline:
+    2px solid var(--accent);
+
+  outline-offset: 3px;
+
+  border-radius: 0;
+}
+
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 
 .marquee-track {
   display: flex;
-  animation: marquee 30s linear infinite;
+
   width: max-content;
+
+  animation:
+    marquee 30s linear infinite;
 }
+
 
 .marquee-track:hover {
   animation-play-state: paused;
 }
 
-/* ══════════════════════════════════════════════
-   DECORATIVE STAR (SVG spinner)
-══════════════════════════════════════════════ */
+
+/* ============================================================
+   DECORATIVE SPINNER
+   ============================================================ */
+
 @keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+  from {
+    transform: rotate(0deg);
+  }
 
-.spin-slow {
-  animation: spin-slow 8s linear infinite;
-}
-
-/* ══════════════════════════════════════════════
-   MOBILE
-══════════════════════════════════════════════ */
-@media (max-width: 640px) {
-  button, a, [role="button"] { min-height: 44px; }
-  input, textarea, select { font-size: 16px !important; }
-
-  .section {
-    padding: 4.5rem 0;
+  to {
+    transform: rotate(360deg);
   }
 }
 
-/* ══════════════════════════════════════════════
+
+.spin-slow {
+  animation:
+    spin-slow 8s linear infinite;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  .section {
+    padding-block: 5rem;
+  }
+
+  .container,
+  .container-narrow {
+    padding-inline: 1.25rem;
+  }
+
+  h1 {
+    font-size:
+      clamp(2.75rem,
+        12vw,
+        4rem);
+  }
+
+  h2 {
+    font-size:
+      clamp(2.25rem,
+        10vw,
+        3rem);
+  }
+
+  h3 {
+    font-size:
+      clamp(1.75rem,
+        8vw,
+        2.25rem);
+  }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 640px) {
+
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  .section {
+    padding-block: 4.5rem;
+  }
+
+  .container,
+  .container-narrow {
+    padding-inline: 1rem;
+  }
+}
+
+
+/* ============================================================
    REDUCED MOTION
-══════════════════════════════════════════════ */
+   ============================================================ */
+
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
+
+    animation-iteration-count: 1 !important;
+
     transition-duration: 0.01ms !important;
+
+    scroll-behavior: auto !important;
   }
 }

@@ -1,425 +1,300 @@
-import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { Download, Compass, Bot, Code2, ArrowRight } from 'lucide-react'
-import { useSettings } from '@/hooks/useSettings'
-import { useExperience } from '@/hooks/useExperience'
-import { useEducation } from '@/hooks/useEducation'
-import { useCertificates } from '@/hooks/useCertificates'
-import { useSkills } from '@/hooks/useSkills'
+import { Link } from 'react-router-dom';
+import { useSettings } from '@/hooks/useSettings';
+import { useExperience } from '@/hooks/useExperience';
+import { useSkills } from '@/hooks/useSkills';
+import { useCertificates } from '@/hooks/useCertificates';
+import { useEducation } from '@/hooks/useEducation';
+import {
+  Download,
+  Compass,
+  Bot,
+  Code2,
+  Cpu,
+  Layers,
+  Globe,
+  Database,
+  Terminal,
+  Sparkles,
+  ArrowUpRight,
+} from 'lucide-react';
 
-/* ── Fallback Experience ── */
-const FALLBACK_EXPERIENCE = [
-  {
-    _id: 'exp-1',
-    role: 'Associate Full Stack Developer',
-    company: 'Cogitate',
-    period: '2023 — PRESENT',
-    description: 'Building and maintaining the DigitalEdge Billing (DEB) platform for insurance carriers using Node.js, Azure Functions, SQL Server, and React.',
-    skills: ['React', 'Node.js', '.NET', 'Azure', 'SQL Server'],
-  },
-  {
-    _id: 'exp-2',
-    role: 'Software Developer Intern',
-    company: 'Cogitate',
-    period: '2023 — 2024',
-    description: 'Interned as a full stack developer on the DEB insurance billing platform. Built API endpoints and interactive UI interfaces.',
-    skills: ['JavaScript', 'Express.js', 'React', 'Git'],
-  },
-  {
-    _id: 'exp-3',
-    role: 'Full-Stack & AI Developer',
-    company: 'Autonomous Projects',
-    period: '2022 — 2023',
-    description: 'Built robust backend architectures and highly interactive frontend experiences, bridging the gap between engineering feasibility and design intent.',
-    skills: ['Python', 'LangChain', 'FAISS', 'FastAPI'],
-  },
-]
+const formatMonthYear = (date) => {
+  if (!date) return '';
+  return new Date(date).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+  });
+};
 
-/* ── Fallback Education ── */
-const FALLBACK_EDUCATION = [
-  {
-    _id: 'edu-1',
-    degree: 'B.E. in Artificial Intelligence & Data Science',
-    institution: 'DY Patil University',
-    years: '2020 — 2024',
-    grade: 'CGPA 8.9 / 10',
-  },
-]
-
-/* ── Fallback Certificates ── */
-const FALLBACK_CERTIFICATES = [
-  {
-    _id: 'cert-1',
-    title: 'Azure Developer Associate (AZ-204)',
-    issuer: 'Microsoft',
-    year: '2024',
-  },
-  {
-    _id: 'cert-2',
-    title: 'Generative AI & LangChain LLM Architectures',
-    issuer: 'DeepLearning.AI',
-    year: '2023',
-  },
-]
+const formatYear = (date) => {
+  if (!date) return '';
+  return new Date(date).getFullYear();
+};
 
 export default function AboutPage() {
-  const { data: settingsData } = useSettings()
-  const { data: expData } = useExperience()
-  const { data: eduData } = useEducation()
-  const { data: certData } = useCertificates()
-  const { data: skillsData } = useSkills()
+  const { data: settingsData } = useSettings();
+  const settings = settingsData?.data || settingsData;
 
-  const settings = settingsData?.data ?? settingsData
-  const rawExperience = expData?.data ?? expData ?? []
-  const rawEducation = eduData?.data ?? eduData ?? []
-  const rawCertificates = certData?.data ?? certData ?? []
+  const { data: experiencesData } = useExperience();
+  const experiences = experiencesData?.data || experiencesData || [];
 
-  // Dynamic experience mapping with fallback
-  const experienceList = rawExperience.length > 0
-    ? rawExperience.map((item) => ({
-        _id: item._id,
-        role: item.role,
-        company: item.company,
-        period: `${item.startDate ? item.startDate.split('-')[0] : '2023'} — ${item.current ? 'PRESENT' : item.endDate ? item.endDate.split('-')[0] : ''}`,
-        description: item.description || item.responsibilities?.join(' ') || '',
-        skills: (item.skills && item.skills.length > 0) ? item.skills : ['React', 'Node.js', 'Azure', '.NET'],
-      }))
-    : FALLBACK_EXPERIENCE
+  const { data: skillsData } = useSkills();
+  const skills = skillsData?.data || skillsData || [];
 
-  // Dynamic education mapping with fallback
-  const educationList = rawEducation.length > 0
-    ? rawEducation.map((item) => ({
-        _id: item._id,
-        degree: `${item.degree}${item.fieldOfStudy ? ` in ${item.fieldOfStudy}` : ''}`,
-        institution: item.institution,
-        years: `${item.startYear || '2020'} — ${item.isOngoing ? 'PRESENT' : item.endYear || '2024'}`,
-        grade: item.grade ? `Grade: ${item.grade}${item.gradeScale ? ` / ${item.gradeScale}` : ''}` : '',
-      }))
-    : FALLBACK_EDUCATION
+  const { data: certificatesData } = useCertificates();
+  const certificates = certificatesData?.data || certificatesData || [];
 
-  // Dynamic certificate mapping with fallback
-  const certificateList = rawCertificates.length > 0
-    ? rawCertificates.map((item) => ({
-        _id: item._id,
-        title: item.title,
-        issuer: item.issuer,
-        year: item.issueDate ? new Date(item.issueDate).getFullYear().toString() : '2024',
-      }))
-    : FALLBACK_CERTIFICATES
+  const { data: educationData } = useEducation();
+  const education = educationData?.data || educationData || [];
+
+  const iconPool = [Code2, Bot, Database, Cpu, Layers, Globe, Terminal, Compass, Sparkles];
 
   return (
-    <div className="min-h-screen bg-[#fbf9f9] text-[#1b1c1c] pt-28 md:pt-36 pb-20">
+    <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] antialiased selection:bg-[var(--accent)] selection:text-[var(--text-inverse)] font-sans pt-[var(--navbar-height)]">
+      
+      {/* HERO SECTION */}
+      <section className="section border-b border-[var(--border)]/30">
+        <div className="container flex flex-col items-center justify-center text-center">
+          <div className="max-w-4xl mx-auto flex flex-col items-center justify-center text-center">
+            
+            {/* Availability Badge — Centered */}
+            <div className="mb-8 flex justify-center w-full">
+              <div className="inline-flex items-center gap-2.5 border border-[var(--border)] bg-[var(--bg-subtle)]/70 px-4 py-1.5 label-caps text-[var(--text-muted)] rounded-none">
+                <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse shrink-0" />
+                <span>{settings?.availabilityNote || 'OPEN TO AI ENGINEER AND FULL STACK DEVELOPER ROLES'}</span>
+              </div>
+            </div>
 
-      {/* Font loading for Playfair Display & DM Serif Display */}
-      <link
-        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Playfair+Display:wght@600;700;900&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-      />
+            {/* Title */}
+            <h1 className="mb-8 font-serif text-center w-full">
+              {settings?.heroTitle || 'Full Stack Developer & AI Engineer'}
+            </h1>
 
-      {/* ── 1. Hero Section ── */}
-      <section className="min-h-[50vh] flex flex-col items-center justify-center text-center px-6 md:px-12 py-16 border-b border-[#dbdad9]/50 max-w-[1280px] mx-auto" style={{ paddingTop: '80px' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-4xl"
-        >
-          {/* Availability pill badge */}
-          <div className="flex items-center justify-center gap-2.5 mb-6">
-            <span className="w-2 h-2 rounded-full bg-[#ff5722] animate-pulse" />
-            <span className="inline-block px-3 py-1 border border-[#5f5e59] text-[#5f5e59] font-bold text-xs tracking-widest uppercase">
-              {settings?.availableForWork
-                ? (settings.availabilityNote || 'OPEN TO AI ENGINEER AND FULL STACK DEVELOPER ROLES')
-                : 'OPEN TO AI ENGINEER AND FULL STACK DEVELOPER ROLES'}
-            </span>
-          </div>
-
-          {/* Main Headline */}
-          <h1
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-normal text-[#1b1c1c] mb-6 leading-snug tracking-tight max-w-3xl mx-auto"
-            style={{ fontFamily: "'DM Serif Display', 'Playfair Display', Georgia, serif" }}
-          >
-            Architecting Digital Experiences Through Intentional Design
-          </h1>
-
-          {/* About Summary Body */}
-          <p className="text-base md:text-lg text-[#5b4039] max-w-2xl mx-auto mb-8 leading-relaxed">
-            {settings?.aboutSummary ||
-              'Associate Full Stack Developer at Cogitate with hands-on experience in React, Node.js, .NET, Azure, and AI/ML integrations.'}
-          </p>
-
-          {/* Background Detail */}
-          {settings?.aboutBackground && (
-            <p className="text-xs md:text-sm text-[#5f5e59] max-w-xl mx-auto mb-8 leading-relaxed">
-              {settings.aboutBackground}
+            {/* Summary & Background */}
+            <p className="body-lg prose-width mx-auto mb-10 text-[var(--text-secondary)] text-center">
+              {settings?.aboutSummary}
+              {settings?.aboutBackground && (
+                <>
+                  <span className="block mt-4" />
+                  {settings.aboutBackground}
+                </>
+              )}
             </p>
-          )}
 
-          {/* Download Resume Action Button */}
-          <div className="flex items-center justify-center">
-            <a
-              href={settings?.resumeUrl || '/resume.pdf'}
-              target="_blank"
-              rel="noopener noreferrer"
-              download
-              className="inline-flex items-center gap-2.5 bg-[#fbf9f9] text-[#1b1c1c] hover:bg-[#1b1c1c] hover:text-white px-7 py-3.5 border border-[#1b1c1c] transition-all text-xs font-bold uppercase tracking-widest"
-            >
-              <Download size={16} />
-              Download Resume
-            </a>
+            {/* Resume CTA */}
+            {settings?.resumeUrl && (
+              <div className="flex justify-center w-full">
+                <a
+                  href={settings.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="interactive inline-flex items-center gap-3 border border-[var(--text-primary)] px-8 py-3 label-caps hover:bg-[var(--bg-hover)]"
+                >
+                  <Download className="w-4 h-4" />
+                  Download Resume
+                </a>
+              </div>
+            )}
           </div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* ── 2. My Journey / Experience Section ── */}
-      <section className="py-20 px-6 md:px-12 max-w-[1280px] mx-auto border-b border-[#dbdad9]/50">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
-          <div className="md:col-span-4">
-            <h3
-              className="text-2xl md:text-3xl font-normal text-[#1b1c1c] mb-4"
-              style={{ fontFamily: "'DM Serif Display', 'Playfair Display', Georgia, serif" }}
-            >
-              Experience
-            </h3>
-            <p className="text-sm text-[#5b4039] leading-relaxed max-w-xs">
-              A timeline of structural growth and creative evolution across disciplines.
-            </p>
-          </div>
+      {/* EXPERIENCE SECTION */}
+      {experiences.length > 0 && (
+        <section className="section border-b border-[var(--border)]/30">
+          <div className="container grid grid-cols-1 md:grid-cols-12 gap-12">
+            <div className="md:col-span-4">
+              <h2 className="text-4xl mb-6 font-serif">Experience</h2>
+              <p className="body-md text-[var(--text-secondary)]">
+                A timeline of structural growth and creative evolution across disciplines.
+              </p>
+            </div>
 
-          <div className="md:col-span-8 relative border-l border-[#dbdad9] pl-6 md:pl-8 space-y-10">
-            {experienceList.map((exp, idx) => (
-              <motion.div
-                key={exp._id || idx}
-                initial={{ opacity: 0, x: 15 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className="relative"
-              >
-                {/* Custom Timeline Dot */}
-                <div
-                  className={`absolute -left-[29px] md:-left-[37px] top-1.5 w-2.5 h-2.5 ${
-                    idx === 0 ? 'bg-[#ff5722]' : 'bg-[#dbdad9]'
-                  }`}
-                />
+            <div className="md:col-span-8 border-l-2 border-[var(--border)] ml-4 md:ml-0">
+              {experiences.map((exp, index) => (
+                <div 
+                  key={exp._id || index} 
+                  className="mb-14 last:mb-0 relative"
+                  style={{ paddingLeft: '40px' }}
+                >
+                  {/* Marker dot at timeline line */}
+                  <div
+                    className={`absolute -left-[7px] top-1.5 w-3 h-3 border-2 border-[var(--bg-base)] ${index === 0 ? 'bg-[var(--accent)]' : 'bg-[var(--border-hover)]'}`}
+                  />
 
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-1 gap-1">
-                  <h4 className="text-base md:text-lg font-bold text-[#1b1c1c] tracking-wide uppercase">
-                    {exp.role}
-                  </h4>
-                  <span className="text-xs font-semibold text-[#5b4039] uppercase tracking-wider">
-                    {exp.period}
-                  </span>
-                </div>
+                  <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-2 mb-2">
+                    <h4 className="label-caps text-lg tracking-wider text-[var(--text-primary)] font-bold">
+                      {exp.role}
+                    </h4>
+                    <span className="label-caps text-xs text-[var(--text-secondary)]">
+                      {formatMonthYear(exp.startDate)} — {exp.isCurrent ? 'Present' : formatMonthYear(exp.endDate)}
+                    </span>
+                  </div>
 
-                <p className="text-xs md:text-sm font-medium text-[#5b4039] mb-2">
-                  {exp.company}
-                </p>
+                  <p className="body-md font-medium text-[var(--text-secondary)] mb-2">{exp.company}</p>
 
-                <p className="text-xs md:text-sm text-[#5f5e59] max-w-2xl mb-4 leading-relaxed">
-                  {exp.description}
-                </p>
+                  <p className="body-md text-[var(--text-muted)] max-w-2xl mb-4">{exp.description}</p>
 
-                {exp.skills && exp.skills.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {exp.skills.map((tech) => (
+                  <div className="flex flex-wrap gap-2">
+                    {(exp.techStack || []).map((tech, i) => (
                       <span
-                        key={tech}
-                        className="px-2.5 py-1 bg-[#f5f3f3] text-[#5b4039] text-[11px] font-semibold border border-[#dbdad9]/50 uppercase tracking-wider"
+                        key={i}
+                        className="px-3 py-1 bg-[var(--bg-subtle)] text-[var(--text-secondary)] text-xs border border-[var(--border)]/40 label-caps font-medium"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
-                )}
-              </motion.div>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* ── 3. Education & Academic Growth Section ── */}
-      {educationList.length > 0 && (
-        <section className="py-20 px-6 md:px-12 max-w-[1280px] mx-auto border-b border-[#dbdad9]/50">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
+      {/* EDUCATION SECTION */}
+      {education.length > 0 && (
+        <section className="section border-b border-[var(--border)]/30">
+          <div className="container grid grid-cols-1 md:grid-cols-12 gap-12">
             <div className="md:col-span-4">
-              <h3
-                className="text-2xl md:text-3xl font-normal text-[#1b1c1c] mb-4"
-                style={{ fontFamily: "'DM Serif Display', 'Playfair Display', Georgia, serif" }}
-              >
-                Education & Academic Growth
-              </h3>
+              <h2 className="text-4xl mb-6 font-serif">Education</h2>
+              <p className="body-md text-[var(--text-secondary)]">
+                Academic foundation and continuous learning.
+              </p>
             </div>
 
-            <div className="md:col-span-8 relative border-l border-[#dbdad9] pl-6 md:pl-8 space-y-8">
-              {educationList.map((edu, idx) => (
-                <motion.div
-                  key={edu._id || idx}
-                  initial={{ opacity: 0, x: 15 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.1 }}
-                  className="relative"
+            <div className="md:col-span-8 border-l-2 border-[var(--border)] ml-4 md:ml-0">
+              {education.map((edu, index) => (
+                <div 
+                  key={edu._id || index} 
+                  className="mb-14 last:mb-0 relative"
+                  style={{ paddingLeft: '40px' }}
                 >
-                  <div className="absolute -left-[29px] md:-left-[37px] top-1.5 w-2.5 h-2.5 bg-[#dbdad9]" />
+                  <div className="absolute -left-[7px] top-1.5 w-3 h-3 border-2 border-[var(--bg-base)] bg-[var(--border-hover)]" />
 
-                  <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-1 gap-1">
-                    <h4 className="text-base md:text-lg font-bold text-[#1b1c1c] tracking-wide uppercase">
+                  <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-2 mb-2">
+                    <h4 className="label-caps text-lg tracking-wider text-[var(--text-primary)] font-bold">
                       {edu.degree}
                     </h4>
-                    <span className="text-xs font-semibold text-[#5b4039] uppercase tracking-wider">
-                      {edu.years}
+                    <span className="label-caps text-xs text-[var(--text-secondary)]">
+                      {edu.startDate ? formatYear(edu.startDate) : ''} — {edu.isCurrent ? 'Present' : edu.endDate ? formatYear(edu.endDate) : ''}
                     </span>
                   </div>
 
-                  <p className="text-xs md:text-sm font-medium text-[#5b4039] mb-1">
-                    {edu.institution}
-                  </p>
-
-                  {edu.grade && (
-                    <p className="text-xs md:text-sm text-[#5f5e59]">
-                      {edu.grade}
-                    </p>
-                  )}
-                </motion.div>
+                  <p className="body-md font-medium text-[var(--text-secondary)] mb-2">{edu.institution}</p>
+                  {edu.description && <p className="body-md text-[var(--text-muted)] max-w-2xl">{edu.description}</p>}
+                </div>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* ── 4. Core Expertise Section ── */}
-      <section className="py-20 px-6 md:px-12 max-w-[1280px] mx-auto border-b border-[#dbdad9]/50">
-        <h3
-          className="text-2xl md:text-3xl font-normal text-[#1b1c1c] mb-12 text-center"
-          style={{ fontFamily: "'DM Serif Display', 'Playfair Display', Georgia, serif" }}
-        >
-          Core Expertise
-        </h3>
+      {/* CORE EXPERTISE / SKILLS */}
+      {skills.length > 0 && (
+        <section className="section border-b border-[var(--border)]/30">
+          <div className="container">
+            <h2 className="text-center mb-12 font-serif">Core Expertise</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Card 1 */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="border border-[#5f5e59]/20 p-8 md:p-10 hover:bg-[#f5f3f3] transition-colors group relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-6 h-6 border-l border-b border-[#ff5722] bg-[#ff5722]/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-            <Compass className="w-8 h-8 text-[#ff5722] mb-6" strokeWidth={1.8} />
-            <h4 className="text-base md:text-lg font-bold text-[#1b1c1c] mb-3 uppercase tracking-wide">
-              UI/UX Architecture
-            </h4>
-            <p className="text-xs md:text-sm text-[#5f5e59] leading-relaxed">
-              Designing scalable, intuitive interfaces built on robust structural foundations and clear typographic hierarchies.
-            </p>
-          </motion.div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+              {skills.map((skill, index) => {
+                const Icon = iconPool[index % iconPool.length];
 
-          {/* Card 2 */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="border border-[#5f5e59]/20 p-8 md:p-10 hover:bg-[#f5f3f3] transition-colors group relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-6 h-6 border-l border-b border-[#ff5722] bg-[#ff5722]/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-            <Bot className="w-8 h-8 text-[#ff5722] mb-6" strokeWidth={1.8} />
-            <h4 className="text-base md:text-lg font-bold text-[#1b1c1c] mb-3 uppercase tracking-wide">
-              AI & Machine Learning
-            </h4>
-            <p className="text-xs md:text-sm text-[#5f5e59] leading-relaxed">
-              Integrating production LLM workflows, LangChain pipelines, FAISS vector search, and intelligent automation systems.
-            </p>
-          </motion.div>
+                return (
+                  <div
+                    key={skill._id || index}
+                    className="card p-5 group flex flex-col justify-between items-start relative overflow-hidden transition-all hover:border-[var(--accent)]"
+                  >
+                    <div className="absolute top-0 right-0 w-6 h-6 border-l border-b border-[var(--accent)] bg-[var(--bg-base)]/60 translate-x-full -translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform"></div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <Icon className="w-5 h-5 text-[var(--accent)] shrink-0 stroke-[1.75]" />
+                      <h4 className="label-caps text-sm tracking-wider text-[var(--text-primary)] font-bold">
+                        {skill.name}
+                      </h4>
+                    </div>
+                    {skill.category && (
+                      <span className="text-[11px] uppercase tracking-wider text-[var(--text-muted)] font-medium">
+                        {skill.category}
+                      </span>
+                    )}
+                    {skill.description && (
+                      <p className="body-md text-xs text-[var(--text-muted)] mt-2 line-clamp-2">
+                        {skill.description}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
-          {/* Card 3 */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="border border-[#5f5e59]/20 p-8 md:p-10 hover:bg-[#f5f3f3] transition-colors group relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-6 h-6 border-l border-b border-[#ff5722] bg-[#ff5722]/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-            <Code2 className="w-8 h-8 text-[#ff5722] mb-6" strokeWidth={1.8} />
-            <h4 className="text-base md:text-lg font-bold text-[#1b1c1c] mb-3 uppercase tracking-wide">
-              Full-Stack Execution
-            </h4>
-            <p className="text-xs md:text-sm text-[#5f5e59] leading-relaxed">
-              Transforming Figma blueprints into production-ready code with exact 1:1 fidelity and optimal performance.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── 5. Certifications & Recognition Section ── */}
-      {certificateList.length > 0 && (
-        <section className="py-20 px-6 md:px-12 max-w-[1280px] mx-auto border-b border-[#dbdad9]/50">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
+      {/* CERTIFICATIONS */}
+      {certificates.length > 0 && (
+        <section className="section border-b border-[var(--border)]/30">
+          <div className="container grid grid-cols-1 md:grid-cols-12 gap-12">
             <div className="md:col-span-4">
-              <h3
-                className="text-2xl md:text-3xl font-normal text-[#1b1c1c] mb-4"
-                style={{ fontFamily: "'DM Serif Display', 'Playfair Display', Georgia, serif" }}
-              >
-                Certifications & Recognition
-              </h3>
+              <h2 className="text-4xl mb-6 font-serif">Certifications</h2>
+              <p className="body-md text-[var(--text-secondary)]">
+                Recognized accomplishments and domain expertise.
+              </p>
             </div>
 
-            <div className="md:col-span-8 relative border-l border-[#dbdad9] pl-6 md:pl-8 space-y-6">
-              {certificateList.map((cert, idx) => (
-                <motion.div
-                  key={cert._id || idx}
-                  initial={{ opacity: 0, x: 15 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.1 }}
-                  className="relative"
+            <div className="md:col-span-8 border-l-2 border-[var(--border)] ml-4 md:ml-0">
+              {certificates.map((cert, index) => (
+                <div 
+                  key={cert._id || index} 
+                  className="mb-10 last:mb-0 relative"
+                  style={{ paddingLeft: '40px' }}
                 >
-                  <div className="absolute -left-[29px] md:-left-[37px] top-1.5 w-2.5 h-2.5 bg-[#dbdad9]" />
+                  <div className="absolute -left-[7px] top-1.5 w-3 h-3 border-2 border-[var(--bg-base)] bg-[var(--border-hover)]" />
 
-                  <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1">
-                    <h4 className="text-base md:text-lg font-bold text-[#1b1c1c] tracking-wide uppercase">
+                  <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-2 mb-1">
+                    <h4 className="label-caps text-base tracking-wider text-[var(--text-primary)] font-bold">
                       {cert.title}
                     </h4>
-                    <span className="text-xs font-semibold text-[#5b4039] uppercase tracking-wider">
-                      {cert.year}
+                    <span className="label-caps text-xs text-[var(--text-secondary)]">
+                      {cert.issueDate ? formatYear(cert.issueDate) : ''}
                     </span>
                   </div>
 
-                  <p className="text-xs md:text-sm font-medium text-[#5b4039]">
-                    {cert.issuer}
-                  </p>
-                </motion.div>
+                  <p className="body-md text-sm text-[var(--text-secondary)]">{cert.issuer}</p>
+
+                  {cert.credentialUrl && (
+                    <a
+                      href={cert.credentialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 mt-2 label-caps text-xs text-[var(--accent)] hover:underline"
+                    >
+                      View Credential <ArrowUpRight className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* ── 6. Call To Action Section ── */}
-      <section className="py-24 px-6 md:px-12 bg-[#fbf9f9] flex flex-col items-center justify-center text-center border-b border-[#dbdad9]/50 min-h-[350px]">
-        <h2
-          className="text-3xl sm:text-4xl md:text-5xl font-normal text-[#1b1c1c] mb-4"
-          style={{ fontFamily: "'DM Serif Display', 'Playfair Display', Georgia, serif" }}
-        >
-          Let's build something structural.
-        </h2>
+      {/* CTA SECTION */}
+      <section className="section text-center">
+        <div className="container flex flex-col items-center">
+          <h2 className="mb-6 max-w-5xl font-serif">Let's build something structural.</h2>
 
-        <p className="text-sm md:text-base text-[#5b4039] mb-8 max-w-xl">
-          Open for collaborative projects and creative direction roles.
-        </p>
+          <p className="body-lg prose-width mb-12 text-[var(--text-secondary)]">
+            Open for collaborative projects and creative direction roles.
+          </p>
 
-        <Link
-          to="/contact"
-          className="inline-flex bg-[#ff5722] text-white hover:bg-[#1b1c1c] px-10 py-4 font-semibold text-xs md:text-sm uppercase tracking-wider transition-colors border border-[#ff5722] hover:border-[#1b1c1c] items-center justify-center gap-2"
-        >
-          Initiate Project
-          <ArrowRight size={18} />
-        </Link>
+          <Link
+            to="/contact"
+            className="accent-bg text-[var(--text-inverse)] px-16 py-5 label-caps tracking-[0.2em] hover:bg-[var(--text-primary)] transition-colors"
+          >
+            Initiate Project
+          </Link>
+        </div>
       </section>
-
-    </div>
-  )
+    </main>
+  );
 }
